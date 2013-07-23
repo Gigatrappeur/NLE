@@ -12,6 +12,14 @@ Spelling :
 (A traduire) Prévoir une méthode permettant de déterminer si un mot est disponible dans le dictionnaire. Sinon proposer un ou plusieurs mots proches.
 
 
+Grammar :
+--------
+
+
+Conjugaison :
+------------
+
+
 
 Prediction :
 -----------
