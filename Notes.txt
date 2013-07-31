@@ -1,0 +1,69 @@
+
+
+
+
+fonctions d'analyses :
+__________________
+
+
+problème :
+si une phrase contient un "mot" inconnu
+ou si la phrase est incorrecte
+
+
+
+Première analyse :
+_________________
+
+on indique pour chaque mot, son type (?)
+
+exemple :
+--------
+
+phrase : Le chat est noir.
+
+retourne :
+le (déterminant | article défini)
+chat (nom | masculin | commun)
+est (verbe | être | conjugué | 3e personne du singulier | au présent de l'indicatif)
+noir (adjectif | couleur)
+
+
+
+Deuxième analyse :
+_________________
+
+on analyse les différents groupes de la phrase
+
+exemple :
+--------
+
+phrase : Le chat est noir.
+
+retourne :
+
+le chat (sujet)
+est (verbe)
+noir (COD)
+
+
+
+Troisième analyse :
+__________________
+
+on analyse la structure de la phrase
+
+exemple :
+--------
+
+phrase : Le chat est noir.
+
+retourne :
+	   phrase
+       /     |     \
+      /      |      \
+	    est     noir
+(sujet)   (verbe)   (COD)
+
+/   \
+le chat
