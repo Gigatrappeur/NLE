@@ -1,0 +1,7 @@
+D:\NLE\Test\bin\Debug\Test.exe
+D:\NLE\Test\bin\Debug\Test.pdb
+D:\NLE\Test\bin\Debug\NLE.dll
+D:\NLE\Test\bin\Debug\NLE.pdb
+D:\NLE\Test\obj\x86\Debug\Test.csprojResolveAssemblyReference.cache
+D:\NLE\Test\obj\x86\Debug\Test.exe
+D:\NLE\Test\obj\x86\Debug\Test.pdb

@@ -1,0 +1,4 @@
+D:\NLE\NLE\bin\Debug\NLE.dll
+D:\NLE\NLE\bin\Debug\NLE.pdb
+D:\NLE\NLE\obj\Debug\NLE.dll
+D:\NLE\NLE\obj\Debug\NLE.pdb
