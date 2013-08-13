@@ -3,6 +3,9 @@ NLE (Natural Language Engine)
 
 The Natural Language Engine can handle anything that is related to natural language sentence. Spelling, grammar, conjugation and prediction.
 
+
+Technical Notes
+---------------
 Instead of a list, we could have a lexical tree. There are several advantages :
 	-	We could quicly have all the words begining with the letters 'ato' for instance.
 		we place the cursor at the node 'a', from there we continue to the no 't' if there is one, and then we continue to the node 'o' if there is one.
