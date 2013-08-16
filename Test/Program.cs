@@ -41,6 +41,8 @@ namespace Test
             Console.WriteLine("on cherche 'mords' : " + (mords != null ? mords.ToString() : "non trouve"));
             Console.WriteLine("on cherche 'mordre' : " + (mordre != null ? mordre.ToString() : "non trouve"));
 
+            Console.WriteLine(Environment.NewLine + "Distance Levenshtein entre 'test' et 'text' : " + Algorithms.LevenshteinDistance("test", "text"));
+
             Console.Write("Appuyer sur une touche...");
             Console.ReadKey();
         }
