@@ -13,7 +13,7 @@ namespace NLE
 
         public Word(string word)
         {
-            this.word = word;
+            this.word = word.ToLower();
         }
 
         public override string ToString()

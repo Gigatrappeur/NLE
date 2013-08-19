@@ -43,6 +43,13 @@ namespace Test
 
             Console.WriteLine(Environment.NewLine + "Distance Levenshtein entre 'test' et 'text' : " + Algorithms.LevenshteinDistance("test", "text"));
 
+
+            listWord.AddWord("atom");
+            listWord.AddWord("atomic");
+            listWord.AddWord("atone");
+
+            Console.WriteLine(Environment.NewLine + listWord);
+
             Console.Write("Appuyer sur une touche...");
             Console.ReadKey();
         }

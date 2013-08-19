@@ -6,9 +6,6 @@ using System.Collections.ObjectModel;
 
 namespace NLE
 {
-    /*
-     * un moyen d'optimiser cette arbre serai de passer par un arbre binaire
-     */
 
     public class Words
     {
@@ -16,27 +13,21 @@ namespace NLE
         // on masque le fonctionnement interne
         private class FragmentWord
         {
-            private Collection<FragmentWord> childs;
+            private Dictionary<char, FragmentWord> childs;
+
             public char fragment { get; private set; }
             public Word word { get; private set; }
 
             public FragmentWord(char fragment)
             {
-                this.childs = new Collection<FragmentWord>();
+                this.childs = new Dictionary<char, FragmentWord>();
                 this.fragment = fragment;
                 this.word = null;
             }
 
             private FragmentWord search(char c)
             {
-                int i = 0;
-                while (i < this.childs.Count && this.childs[i].fragment != c)
-                    i++;
-
-                if (i < this.childs.Count)
-                    return this.childs[i];
-
-                return null;
+                return (this.childs.ContainsKey(c) ? this.childs[c] : null);
             }
 
             public Word get(string w)
@@ -59,7 +50,7 @@ namespace NLE
                 if (f == null)
                 {
                     f = new FragmentWord(c);
-                    this.childs.Add(f);
+                    this.childs.Add(c, f);
                 }
 
                 if (substr.Length > 1)
@@ -73,6 +64,37 @@ namespace NLE
                 }
 
                 return false; // on a rien ajouté
+            }
+
+            public override string ToString()
+            {
+                return this.ToString(0);
+            }
+
+            protected string ToString(int level)
+            {
+                String rt = this.fragment + Environment.NewLine;
+
+                if (this.word != null)
+                {
+                    rt += concatene(' ', level) + this.word + Environment.NewLine;
+                }
+
+                foreach (var item in this.childs)
+	            {
+		            rt += concatene(' ', level) + item.Value.ToString(level + 1);
+	            }
+
+                return rt;
+            }
+
+            private string concatene(char c, int nb)
+            {
+                string rt = "";
+                for (int i = 0; i < nb; i++)
+                    rt += c;
+
+                return rt;
             }
         }
 
@@ -90,14 +112,19 @@ namespace NLE
             return this.root.AddFragment(w, w.word);
         }
 
+        public bool AddWord(string w)
+        {
+            return this.AddWord(new Word(w));
+        }
+
         public Word get(string w)
         {
-            return this.root.get(w);
+            return this.root.get(w.ToLower());
         }
 
         public override string ToString()
         {
-            string rt = "Words " + this.root;
+            string rt = "Words" + this.root;
 
             return rt;
         }

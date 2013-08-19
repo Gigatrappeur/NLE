@@ -7,7 +7,7 @@ namespace NLE
     /// <summary>
     /// contains various algorithms
     /// </summary>
-    public static class Algorithms
+    public static partial class Algorithms
     {
         /// <summary>
         /// Computes the distance between two strings with Levenshtein algorithm
