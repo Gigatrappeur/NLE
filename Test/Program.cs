@@ -48,7 +48,16 @@ namespace Test
             listWord.AddWord("atomic");
             listWord.AddWord("atone");
 
-            Console.WriteLine(Environment.NewLine + listWord);
+            Console.WriteLine(Environment.NewLine + "Arbre :" + Environment.NewLine + listWord);
+
+            Console.WriteLine(Environment.NewLine + "Liste des mots contenu dans notre dictionnaire :");
+
+            Word[] words = listWord.getAll();
+            Array.Sort(words);
+            foreach (Word w in words)
+            {
+                Console.WriteLine(w);
+            }
 
             Console.Write("Appuyer sur une touche...");
             Console.ReadKey();

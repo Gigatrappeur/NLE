@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NLE
 {
-    public class Word
+    public class Word : IComparable<Word>
     {
         public string word { get; private set; }
 
@@ -20,5 +20,16 @@ namespace NLE
         {
             return "Word [" + this.word + "]";
         }
+
+
+        /// <summary>
+        /// Implementation de IComparable pour permettre de trier des Word
+        /// </summary>
+        public int CompareTo(Word other)
+        {
+            return word.CompareTo(other.word);
+        }
+
+        
     }
 }

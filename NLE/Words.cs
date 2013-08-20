@@ -66,24 +66,43 @@ namespace NLE
                 return false; // on a rien ajouté
             }
 
-            public override string ToString()
+            public Word[] getAll()
             {
-                return this.ToString(0);
+                List<Word> rt = new List<Word>();
+                if (this.word != null)
+                    rt.Add(this.word);
+
+                foreach (var item in this.childs)
+                {
+                    rt.AddRange(item.Value.getAll());
+                }
+
+                return rt.ToArray();
             }
 
-            protected string ToString(int level)
+            public override string ToString()
+            {
+                return this.ToString();
+            }
+
+            protected string ToString(string startLine = "")
             {
                 String rt = this.fragment + Environment.NewLine;
 
-                if (this.word != null)
-                {
-                    rt += concatene(' ', level) + this.word + Environment.NewLine;
-                }
-
+                int i = (this.word != null? 0 : 1);
                 foreach (var item in this.childs)
 	            {
-		            rt += concatene(' ', level) + item.Value.ToString(level + 1);
+                    string next = (i > this.childs.Count - 1 ? "  " : "| ");
+
+                    rt += startLine + "+-" + item.Value.ToString(startLine + next);
+
+                    i++;
 	            }
+
+                if (this.word != null)
+                {
+                    rt += startLine + "+-" + this.word + Environment.NewLine + startLine + Environment.NewLine;
+                }
 
                 return rt;
             }
@@ -106,20 +125,44 @@ namespace NLE
             this.root = new FragmentWord(' ');
         }
 
+        /// <summary>
+        /// Ajoute un mot au dictionnaire
+        /// </summary>
+        /// <param name="w">Mot à ajouter</param>
+        /// <returns>si le mot a été ajouté</returns>
         public bool AddWord(Word w)
         {
-            //return FragmentWord.addWordToTree(w, this.root);
             return this.root.AddFragment(w, w.word);
         }
 
+        /// <summary>
+        /// Ajoute un mot au dictionnaire
+        /// </summary>
+        /// <param name="w">Chaine contenant le mot à ajouter</param>
+        /// <returns>si le mot a été ajouté</returns>
         public bool AddWord(string w)
         {
             return this.AddWord(new Word(w));
         }
 
+
+        /// <summary>
+        /// Récupère l'objet Word correspondant à w
+        /// </summary>
+        /// <param name="w">Chaine contenant le mot à chercher</param>
+        /// <returns>Le Word correspondant à w</returns>
         public Word get(string w)
         {
             return this.root.get(w.ToLower());
+        }
+
+        /// <summary>
+        /// Récupère la liste de Word contenu dans le dictionnaire
+        /// </summary>
+        /// <returns></returns>
+        public Word[] getAll()
+        {
+            return this.root.getAll();
         }
 
         public override string ToString()
