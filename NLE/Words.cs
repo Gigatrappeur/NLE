@@ -30,8 +30,9 @@ namespace NLE
                 return (this.childs.ContainsKey(c) ? this.childs[c] : null);
             }
 
-            public Word get(string w)
+            /*public Word get(string w)
             {
+
                 FragmentWord fw = this.search(w[0]);
                 if (fw == null)
                     return null; // mot pas trouvé
@@ -39,6 +40,18 @@ namespace NLE
                 if (w.Length == 1) // on est arrivé à la fin du mot
                     return fw.word;
                 
+                return fw.get(w.Substring(1)); // on continu de chercher
+            }*/
+
+            public FragmentWord get(string w)
+            {
+                FragmentWord fw = this.search(w[0]);
+                if (fw == null)
+                    return null; // mot pas trouvé
+
+                if (w.Length == 1) // on est arrivé à la fin du mot
+                    return fw;
+
                 return fw.get(w.Substring(1)); // on continu de chercher
             }
 
@@ -142,6 +155,7 @@ namespace NLE
         /// <returns>si le mot a été ajouté</returns>
         public bool AddWord(string w)
         {
+            // ajouter un attribut "Attribut" pour le passer au constructeur de Word
             return this.AddWord(new Word(w));
         }
 
@@ -153,7 +167,8 @@ namespace NLE
         /// <returns>Le Word correspondant à w</returns>
         public Word get(string w)
         {
-            return this.root.get(w.ToLower());
+            FragmentWord rt = this.getFragment(w);
+            return (rt != null ? rt.word : null);
         }
 
         /// <summary>
@@ -165,11 +180,45 @@ namespace NLE
             return this.root.getAll();
         }
 
+        /// <summary>
+        /// Récupère la liste de Word contenu dans le dictionnaire filtré avec "filter"
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public Word[] getAll(string filter)
+        {
+            FragmentWord rt = this.getFragment(filter);
+            if (rt == null)
+            {
+                return new Word[0];
+            }
+
+            return rt.getAll();
+        }
+
+        /*
+        A utiliser avec des filtre sur les attributs. Par exemple si l'on cherche un enfant qui est aussi un verbe conjugé à la première personne du singulier.
+        public Word[] getAll(Word filter)
+        {
+            return null;
+        }
+        */
+
         public override string ToString()
         {
             string rt = "Words" + this.root;
 
             return rt;
+        }
+
+        /// <summary>
+        /// Retourne le fragment correspondant à la chaine w
+        /// </summary>
+        /// <param name="w"></param>
+        /// <returns></returns>
+        private FragmentWord getFragment(string w)
+        {
+            return this.root.get(w.ToLower());
         }
     }
 }

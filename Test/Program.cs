@@ -54,10 +54,10 @@ namespace Test
 
             Word[] words = listWord.getAll();
             Array.Sort(words);
-            foreach (Word w in words)
-            {
-                Console.WriteLine(w);
-            }
+            Console.WriteLine(Utils.ToString(words));
+            
+
+            Console.WriteLine(Environment.NewLine + "Liste de mot prédit à partir de 'test':" + Environment.NewLine + Utils.ToString(Prediction.simple(listWord, "test")));
 
             Console.Write("Appuyer sur une touche...");
             Console.ReadKey();

@@ -1,7 +1,18 @@
 
+2013-08-21:
+Ecrire un système de loader indépendant du moteur de façons à pouvoir charger à partir d'un fichier, d'un esemble de fichiers ou d'un base de données...
+
+Prendre un décision concernant le typage des mots. (attribut avec enum ou héritage)
+
+Système de règles ?
+Exemple :
+rule 1 - SUJET VERBE
+rule 2 - SUJET VERBE COD
+...
 
 
 
+2013-07-31:
 fonctions d'analyses :
 __________________
 
@@ -23,7 +34,7 @@ exemple :
 phrase : Le chat est noir.
 
 retourne :
-le (déterminant | article défini)
+le (déterminant | article défini | singulier)
 chat (nom | masculin | commun)
 est (verbe | être | conjugué | 3e personne du singulier | au présent de l'indicatif)
 noir (adjectif | couleur)
