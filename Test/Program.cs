@@ -11,7 +11,7 @@ namespace Test
     {
         static void Main(string[] args)
         {
-
+            
             Word w1 = new Word("test");
             Word w2 = new Word("tester");
             Word w3 = new Word("mordre");

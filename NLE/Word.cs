@@ -9,10 +9,6 @@ namespace NLE
     {
         public string word { get; private set; }
 
-        // stocker des attributs ? (verbe, nom...)
-        // utiliser des enum ?
-        // ou procéder par héritage ? classe verbe, classe nom...
-
         public Word(string word)
         {
             this.word = word.ToLower();
