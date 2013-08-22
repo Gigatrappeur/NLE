@@ -1,8 +1,6 @@
 
-2013-08-21:
+2013-08-22:
 Ecrire un système de loader indépendant du moteur de façons à pouvoir charger à partir d'un fichier, d'un esemble de fichiers ou d'un base de données...
-
-Prendre un décision concernant le typage des mots. (attribut avec enum ou héritage)
 
 Système de règles ?
 Exemple :
@@ -10,6 +8,8 @@ rule 1 - SUJET VERBE
 rule 2 - SUJET VERBE COD
 ...
 
+
+Prévoir un système permettant d'ajouter de nouveau mot et de les notifier à un système centrale (serveur) pour updater tous le monde.
 
 
 2013-07-31:

@@ -12,10 +12,10 @@ namespace Test
         static void Main(string[] args)
         {
             
-            Word w1 = new Word("test");
-            Word w2 = new Word("tester");
-            Word w3 = new Word("mordre");
-            Word w4 = new Word("testera");
+            Word w1 = new Noun("test");
+            Word w2 = new Verb("tester");
+            Word w3 = new Verb("mordre");
+            Word w4 = new Verb("testera");
 
 
             Words listWord = new Words();
@@ -44,9 +44,9 @@ namespace Test
             Console.WriteLine(Environment.NewLine + "Distance Levenshtein entre 'test' et 'text' : " + Algorithms.LevenshteinDistance("test", "text"));
 
 
-            listWord.AddWord("atom");
-            listWord.AddWord("atomic");
-            listWord.AddWord("atone");
+            listWord.AddWord(new Noun("atome"));
+            listWord.AddWord(new Adjective("atomique"));
+            listWord.AddWord(new Adjective("atone"));
 
             Console.WriteLine(Environment.NewLine + "Arbre :" + Environment.NewLine + listWord);
 

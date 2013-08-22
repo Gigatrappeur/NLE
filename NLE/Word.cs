@@ -5,18 +5,26 @@ using System.Text;
 
 namespace NLE
 {
-    public class Word : IComparable<Word>
+    public abstract class Word : IComparable<Word>
     {
         public string word { get; private set; }
+        public string typage { get; private set; }
 
-        public Word(string word)
+
+        public Word(string word, string type)
         {
             this.word = word.ToLower();
+            this.typage = type;
+        }
+
+        protected void addTypage(string t)
+        {
+            this.typage += ", " + t;
         }
 
         public override string ToString()
         {
-            return "Word [" + this.word + "]";
+            return this.word + " [" + this.typage + "]";
         }
 
 

@@ -30,19 +30,6 @@ namespace NLE
                 return (this.childs.ContainsKey(c) ? this.childs[c] : null);
             }
 
-            /*public Word get(string w)
-            {
-
-                FragmentWord fw = this.search(w[0]);
-                if (fw == null)
-                    return null; // mot pas trouvé
-
-                if (w.Length == 1) // on est arrivé à la fin du mot
-                    return fw.word;
-                
-                return fw.get(w.Substring(1)); // on continu de chercher
-            }*/
-
             public FragmentWord get(string w)
             {
                 FragmentWord fw = this.search(w[0]);
@@ -148,16 +135,14 @@ namespace NLE
             return this.root.AddFragment(w, w.word);
         }
 
-        /// <summary>
-        /// Ajoute un mot au dictionnaire
-        /// </summary>
-        /// <param name="w">Chaine contenant le mot à ajouter</param>
-        /// <returns>si le mot a été ajouté</returns>
+        /*
         public bool AddWord(string w)
         {
-            // ajouter un attribut "Attribut" pour le passer au constructeur de Word
-            return this.AddWord(new Word(w));
+            // factory ?
+            Word word = new Word(w);
+            return this.AddWord(word);
         }
+        */
 
 
         /// <summary>

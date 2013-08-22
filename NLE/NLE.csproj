@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adjective.cs" />
     <Compile Include="Levenshtein.cs" />
+    <Compile Include="Noun.cs" />
     <Compile Include="Prediction.cs" />
     <Compile Include="Verb.cs" />
     <Compile Include="Words.cs" />
