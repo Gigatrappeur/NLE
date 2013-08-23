@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 
+using NLE.Glossary;
+using NLE.Loader;
+
 namespace NLE
 {
 
@@ -123,6 +126,13 @@ namespace NLE
         public Words()
         {
             this.root = new FragmentWord(' ');
+        }
+
+        public static Words load(ILoader loader)
+        {
+            Words dico = new Words();
+            loader.load(dico);
+            return dico;
         }
 
         /// <summary>

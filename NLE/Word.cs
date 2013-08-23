@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NLE
+namespace NLE.Glossary
 {
     public abstract class Word : IComparable<Word>
     {
@@ -11,15 +11,15 @@ namespace NLE
         public string typage { get; private set; }
 
 
-        public Word(string word, string type)
+        public Word(string word)
         {
             this.word = word.ToLower();
-            this.typage = type;
+            this.typage = "";
         }
 
         protected void addTypage(string t)
         {
-            this.typage += ", " + t;
+            this.typage += (this.typage != "" ? ", " : "") + t;
         }
 
         public override string ToString()

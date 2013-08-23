@@ -41,9 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adjective.cs" />
+    <Compile Include="ConjugatedVerb.cs" />
+    <Compile Include="ILoader.cs" />
+    <Compile Include="InfinitiveVerb.cs" />
     <Compile Include="Levenshtein.cs" />
     <Compile Include="Noun.cs" />
     <Compile Include="Prediction.cs" />
+    <Compile Include="SimpleFileLoader.cs" />
+    <Compile Include="UnknownWord.cs" />
     <Compile Include="Verb.cs" />
     <Compile Include="Words.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

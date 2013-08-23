@@ -5,15 +5,13 @@ using System.Text;
 
 namespace NLE.Glossary
 {
-    public class Adjective : Word
+    public class UnknownWord : Word
     {
 
-        public Adjective(string a)
-            : base(a)
+        public UnknownWord(string u)
+            : base(u)
         {
-            this.addTypage("Adjective");
-
-
+            this.addTypage("Unknown");
         }
     }
 }

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NLE
+using NLE.Glossary;
+
+namespace NLE.Engine
 {
     public class Prediction
     {

@@ -4,10 +4,12 @@ Ecrire un système de loader indépendant du moteur de façons à pouvoir charger à 
 
 Système de règles ?
 Exemple :
-rule 1 - SUJET VERBE
-rule 2 - SUJET VERBE COD
+PHRASE - SUJET VERBE
+PHRASE - SUJET VERBE COD
 ...
 
+SUJET - Determinant Noun
+...
 
 Prévoir un système permettant d'ajouter de nouveau mot et de les notifier à un système centrale (serveur) pour updater tous le monde.
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NLE
+namespace NLE.Glossary
 {
     public class Noun : Word
     {
@@ -19,8 +19,10 @@ namespace NLE
 
 
         public Noun(string n)
-            : base(n, "Noun")
+            : base(n)
         {
+            this.addTypage("Noun");
+
 
             // --  temporaire  ------------------------------------------------------------------------------
             switch (n)

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 
 using NLE;
+using NLE.Glossary;
+using NLE.Engine;
+using NLE.Loader;
 
 namespace Test
 {
@@ -11,11 +14,21 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            
+
+            Test2();
+
+            Console.Write("Appuyer sur une touche...");
+            Console.ReadKey();
+        }
+
+
+        static void Test1()
+        {
+
             Word w1 = new Noun("test");
-            Word w2 = new Verb("tester");
-            Word w3 = new Verb("mordre");
-            Word w4 = new Verb("testera");
+            InfinitiveVerb w2 = new InfinitiveVerb("tester");
+            Word w3 = new InfinitiveVerb("mordre");
+            Word w4 = new ConjugatedVerb("testera", "futur simple", w2, "3ieme personne singulier");
 
 
             Words listWord = new Words();
@@ -26,7 +39,7 @@ namespace Test
             bool b4 = listWord.AddWord(w4);
 
             bool b5 = listWord.AddWord(w2);
-            
+
 
             Console.WriteLine("ajout w1(" + w1 + ") : " + (b1 ? "reussi" : "erreur"));
             Console.WriteLine("ajout w2(" + w2 + ") : " + (b2 ? "reussi" : "erreur"));
@@ -55,12 +68,17 @@ namespace Test
             Word[] words = listWord.getAll();
             Array.Sort(words);
             Console.WriteLine(Utils.ToString(words));
-            
+
 
             Console.WriteLine(Environment.NewLine + "Liste de mot prédit à partir de 'test':" + Environment.NewLine + Utils.ToString(Prediction.simple(listWord, "test")));
+        }
 
-            Console.Write("Appuyer sur une touche...");
-            Console.ReadKey();
+        static void Test2()
+        {
+            SimpleFileLoader loader = new SimpleFileLoader(@"..\..\..\Data\TestData.txt");
+            Words listWord =  Words.load(loader);
+
+            Console.WriteLine(Environment.NewLine + "Arbre :" + Environment.NewLine + listWord);
         }
     }
 }
