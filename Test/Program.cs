@@ -76,7 +76,8 @@ namespace Test
         static void Test2()
         {
             SimpleFileLoader loader = new SimpleFileLoader(@"..\..\..\Data\TestData.txt");
-            Words listWord =  Words.load(loader);
+            Words listWord = new Words(loader);
+            listWord.load();
 
             Console.WriteLine(Environment.NewLine + "Arbre :" + Environment.NewLine + listWord);
         }

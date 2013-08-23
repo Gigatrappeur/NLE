@@ -1,3 +1,4 @@
 *.suo
-bin/
+[Dd]ebug/
+[Rr]elease/
 obj/

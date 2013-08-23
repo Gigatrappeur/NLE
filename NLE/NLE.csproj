@@ -33,6 +33,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>bin\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,19 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adjective.cs" />
-    <Compile Include="ConjugatedVerb.cs" />
-    <Compile Include="ILoader.cs" />
-    <Compile Include="InfinitiveVerb.cs" />
+    <Compile Include="Glossary\Adjective.cs" />
+    <Compile Include="Glossary\ConjugatedVerb.cs" />
+    <Compile Include="Loader\ILoader.cs" />
+    <Compile Include="Glossary\InfinitiveVerb.cs" />
     <Compile Include="Levenshtein.cs" />
-    <Compile Include="Noun.cs" />
-    <Compile Include="Prediction.cs" />
-    <Compile Include="SimpleFileLoader.cs" />
-    <Compile Include="UnknownWord.cs" />
-    <Compile Include="Verb.cs" />
+    <Compile Include="Glossary\Noun.cs" />
+    <Compile Include="Engine\Prediction.cs" />
+    <Compile Include="Loader\SimpleFileLoader.cs" />
+    <Compile Include="Glossary\UnknownWord.cs" />
+    <Compile Include="Glossary\Verb.cs" />
+    <Compile Include="Loader\SQLiteLoader.cs" />
     <Compile Include="Words.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Word.cs" />
+    <Compile Include="Glossary\Word.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE">

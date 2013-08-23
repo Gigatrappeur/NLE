@@ -7,8 +7,10 @@ namespace NLE.Loader
 {
     public interface ILoader
     {
+        bool Load(Words dico);
+        bool UnLoad();
 
-        void load(Words dico);
+        // doit gérer les interactions entre le dictionnaire et son support de stockage
 
     }
 }

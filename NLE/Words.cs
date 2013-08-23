@@ -12,6 +12,131 @@ namespace NLE
 
     public class Words
     {
+        // racine de l'arbre
+        private FragmentWord root;
+
+        // indique si le dictionnaire est déjà chargé
+        private bool IsAlreadyLoaded;
+        // objet gérant les intéractions entre le dictionnaire et son support de stockage
+        private ILoader loader;
+
+
+        /// <summary>
+        /// Constructeur du dictionnaire
+        /// </summary>
+        /// <param name="loader">Objet permettant de gérer les opération entre le dictionnaire et son support de stockage</param>
+        public Words(ILoader loader = null)
+        {
+            this.loader = loader;
+            this.root = new FragmentWord(' ');
+        }
+
+
+        /// <summary>
+        /// Charge le dictionnaire à l'aide du loader donné lors de la construction
+        /// </summary>
+        /// <returns>Si le chargement s'est passé correctement, renvoi true</returns>
+        public bool load()
+        {
+            if (this.loader != null && !this.IsAlreadyLoaded)
+            {
+                this.IsAlreadyLoaded = this.loader.Load(this);
+                return this.IsAlreadyLoaded;
+            }
+
+            return false; // pas de loader définit ou dico déjà chargé
+        }
+
+
+        /// <summary>
+        /// Ajoute un mot au dictionnaire
+        /// </summary>
+        /// <param name="w">Mot à ajouter</param>
+        /// <returns>Si le mot a été ajouté, retourne true</returns>
+        public bool AddWord(Word w)
+        {
+            return this.root.AddFragment(w, w.word);
+        }
+        
+
+        /// <summary>
+        /// Récupère l'objet Word correspondant à w
+        /// </summary>
+        /// <param name="w">Chaine contenant le mot à chercher</param>
+        /// <returns>Retourne le 'Word' correspondant à w</returns>
+        public Word get(string w)
+        {
+            FragmentWord rt = this.getFragment(w);
+            return (rt != null ? rt.word : null);
+        }
+
+
+        /// <summary>
+        /// Récupère la liste de Word contenu dans le dictionnaire
+        /// </summary>
+        /// <returns>Retourne tableau de 'Word'</returns>
+        public Word[] getAll()
+        {
+            return this.root.getAll();
+        }
+
+
+        /// <summary>
+        /// Récupère la liste de Word contenu dans le dictionnaire filtré avec "filter"
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns>Retourne tableau de 'Word'</returns>
+        public Word[] getAll(string filter)
+        {
+            FragmentWord rt = this.getFragment(filter);
+            if (rt == null)
+            {
+                return new Word[0];
+            }
+
+            return rt.getAll();
+        }
+
+
+        /*
+        A utiliser avec des filtre sur les attributs. Par exemple si l'on cherche un enfant qui est aussi un verbe conjugé à la première personne du singulier.
+        public Word[] getAll(Word filter)
+        {
+            return null;
+        }
+        */
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Retourne 'Words' sous forme de chaine</returns>
+        public override string ToString()
+        {
+            string rt = "Words" + this.root;
+
+            return rt;
+        }
+
+
+
+        #region "Private Method"
+
+
+        /// <summary>
+        /// Retourne le fragment correspondant à la chaine w
+        /// </summary>
+        /// <param name="w"></param>
+        /// <returns></returns>
+        private FragmentWord getFragment(string w)
+        {
+            return this.root.get(w.ToLower());
+        }
+
+
+        #endregion
+
+
 
         // on masque le fonctionnement interne
         private class FragmentWord
@@ -92,15 +217,15 @@ namespace NLE
             {
                 String rt = this.fragment + Environment.NewLine;
 
-                int i = (this.word != null? 0 : 1);
+                int i = (this.word != null ? 0 : 1);
                 foreach (var item in this.childs)
-	            {
+                {
                     string next = (i > this.childs.Count - 1 ? "  " : "| ");
 
                     rt += startLine + "+-" + item.Value.ToString(startLine + next);
 
                     i++;
-	            }
+                }
 
                 if (this.word != null)
                 {
@@ -110,110 +235,6 @@ namespace NLE
                 return rt;
             }
 
-            private string concatene(char c, int nb)
-            {
-                string rt = "";
-                for (int i = 0; i < nb; i++)
-                    rt += c;
-
-                return rt;
-            }
-        }
-
-
-        private FragmentWord root;
-
-        public Words()
-        {
-            this.root = new FragmentWord(' ');
-        }
-
-        public static Words load(ILoader loader)
-        {
-            Words dico = new Words();
-            loader.load(dico);
-            return dico;
-        }
-
-        /// <summary>
-        /// Ajoute un mot au dictionnaire
-        /// </summary>
-        /// <param name="w">Mot à ajouter</param>
-        /// <returns>si le mot a été ajouté</returns>
-        public bool AddWord(Word w)
-        {
-            return this.root.AddFragment(w, w.word);
-        }
-
-        /*
-        public bool AddWord(string w)
-        {
-            // factory ?
-            Word word = new Word(w);
-            return this.AddWord(word);
-        }
-        */
-
-
-        /// <summary>
-        /// Récupère l'objet Word correspondant à w
-        /// </summary>
-        /// <param name="w">Chaine contenant le mot à chercher</param>
-        /// <returns>Le Word correspondant à w</returns>
-        public Word get(string w)
-        {
-            FragmentWord rt = this.getFragment(w);
-            return (rt != null ? rt.word : null);
-        }
-
-        /// <summary>
-        /// Récupère la liste de Word contenu dans le dictionnaire
-        /// </summary>
-        /// <returns></returns>
-        public Word[] getAll()
-        {
-            return this.root.getAll();
-        }
-
-        /// <summary>
-        /// Récupère la liste de Word contenu dans le dictionnaire filtré avec "filter"
-        /// </summary>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        public Word[] getAll(string filter)
-        {
-            FragmentWord rt = this.getFragment(filter);
-            if (rt == null)
-            {
-                return new Word[0];
-            }
-
-            return rt.getAll();
-        }
-
-        /*
-        A utiliser avec des filtre sur les attributs. Par exemple si l'on cherche un enfant qui est aussi un verbe conjugé à la première personne du singulier.
-        public Word[] getAll(Word filter)
-        {
-            return null;
-        }
-        */
-
-        public override string ToString()
-        {
-            string rt = "Words" + this.root;
-
-            return rt;
-        }
-
-        /// <summary>
-        /// Retourne le fragment correspondant à la chaine w
-        /// </summary>
-        /// <param name="w"></param>
-        /// <returns></returns>
-        private FragmentWord getFragment(string w)
-        {
-            return this.root.get(w.ToLower());
         }
     }
 }

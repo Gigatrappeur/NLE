@@ -19,9 +19,9 @@ namespace NLE.Loader
             this.filename = filename;
         }
 
-        void ILoader.load(Words dico)
+        bool ILoader.Load(Words dico)
         {
-            if (this.filename == null) return;
+            if (this.filename == null) return false;
 
             string[] lines = File.ReadAllLines(this.filename);
 
@@ -74,6 +74,13 @@ namespace NLE.Loader
                 }
 
             }
+
+            return true; // dico chargé
+        }
+
+        bool ILoader.UnLoad()
+        {
+            return true;
         }
     }
 }
