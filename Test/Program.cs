@@ -5,8 +5,11 @@ using System.Text;
 
 using NLE;
 using NLE.Glossary;
-using NLE.Engine;
+using System.Threading;
+/*using NLE.Engine;
 using NLE.Loader;
+using System.Data.SQLite;
+using System.Data;*/
 
 namespace Test
 {
@@ -15,14 +18,14 @@ namespace Test
         static void Main(string[] args)
         {
 
-            Test2();
+            Test5();
 
             Console.Write("Appuyer sur une touche...");
             Console.ReadKey();
         }
 
 
-        static void Test1()
+        /*static void Test1()
         {
 
             Word w1 = new Noun("test");
@@ -81,5 +84,49 @@ namespace Test
 
             Console.WriteLine(Environment.NewLine + "Arbre :" + Environment.NewLine + listWord);
         }
+
+        static void Test3()
+        {
+            string filename = @"..\..\..\Data\fr.db";
+            SQLiteConnection link = new SQLiteConnection("Data Source=" + filename + ";Version=3;Compress=True;");
+            link.Open();
+
+
+            DataSet dataset = new DataSet();
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter("SELECT * FROM words", link);
+
+            adapter.Fill(dataset);
+
+            DataTable table = dataset.Tables[0];
+            int nbRow = table.Rows.Count;
+            for (int i = 0; i < nbRow; i++)
+            {
+                Console.WriteLine(table.Rows[i].ItemArray[1]);
+            }
+
+            link.Close();
+        }
+
+        static void Test4()
+        {
+            string filename = @"..\..\..\Data\fr.db";
+            SQLiteLoader loader = new SQLiteLoader(filename);
+            Words listWord = new Words(loader);
+            listWord.load();
+
+            Console.WriteLine(Environment.NewLine + "Arbre :" + Environment.NewLine + listWord);
+        }*/
+
+        static void Test5()
+        {
+            NLEEngine.load();
+
+            Console.WriteLine(NLEEngine.showDico());
+
+            InfinitiveVerb tester = (InfinitiveVerb)NLEEngine.get("tester");
+
+            Console.WriteLine(tester.ConjugationTablesToString());
+        }
+
     }
 }

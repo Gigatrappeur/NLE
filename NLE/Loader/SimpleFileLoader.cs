@@ -5,10 +5,11 @@ using System.Text;
 using System.IO;
 
 using NLE.Glossary;
+using NLE.Engine;
 
 namespace NLE.Loader
 {
-    public class SimpleFileLoader : ILoader
+    class SimpleFileLoader : ILoader
     {
         private string filename = null;
 
@@ -55,7 +56,7 @@ namespace NLE.Loader
                                 if (maybeInfinitif is InfinitiveVerb)
                                     infinitif = (InfinitiveVerb) maybeInfinitif;
 
-                                dico.AddWord(new ConjugatedVerb(word[0], word[3], infinitif, word[5]));
+                                dico.AddWord(new ConjugatedVerb(word[0], word[3], infinitif, new string[] {word[5]}));
                             }
                             else
                             {

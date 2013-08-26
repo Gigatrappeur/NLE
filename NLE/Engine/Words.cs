@@ -7,10 +7,10 @@ using System.Collections.ObjectModel;
 using NLE.Glossary;
 using NLE.Loader;
 
-namespace NLE
+namespace NLE.Engine
 {
 
-    public class Words
+    class Words
     {
         // racine de l'arbre
         private FragmentWord root;

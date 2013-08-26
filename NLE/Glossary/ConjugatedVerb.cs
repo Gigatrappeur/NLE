@@ -7,26 +7,28 @@ namespace NLE.Glossary
 {
     public class ConjugatedVerb : Verb
     {
+        // temps (futur, présent...)
+        public string tense { get; private set; }
 
-        public string temps { get; private set; }
-        
-        public InfinitiveVerb infinitif { get; private set; } // référence vers le verbe à l'infinitif
+        // référence vers le verbe à l'infinitif
+        public InfinitiveVerb infinitive { get; private set; } 
 
         // il peut correspondre à plusieurs personnes
-        public string personne { get; private set; }
+        public string[] persons { get; private set; }
 
-        public ConjugatedVerb(string v, string temps, InfinitiveVerb infinitif, string personne)
+
+        public ConjugatedVerb(string v, string tense, InfinitiveVerb infinitive, string[] persons)
             : base(v)
         {
             this.addTypage("Conjugué");
 
-            this.temps = temps;
-            this.infinitif = infinitif;
-            this.personne = personne;
+            this.tense = tense;
+            this.infinitive = infinitive;
+            this.persons = persons;
 
-            this.addTypage(temps);
-            this.addTypage(infinitif != null ? infinitif.word : "unknown");
-            this.addTypage(personne);
+            this.addTypage(this.tense);
+            this.addTypage(this.infinitive != null ? this.infinitive.word : "unknown");
+            this.addTypage(string.Join(", ", persons));
         }
     }
 }

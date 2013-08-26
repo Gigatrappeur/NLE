@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace NLE
+namespace NLE.Engine
 {
 
     /// <summary>

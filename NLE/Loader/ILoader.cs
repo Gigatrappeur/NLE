@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NLE.Engine;
+
 namespace NLE.Loader
 {
-    public interface ILoader
+    interface ILoader
     {
         bool Load(Words dico);
         bool UnLoad();

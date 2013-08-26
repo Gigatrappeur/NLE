@@ -7,7 +7,7 @@ using NLE.Glossary;
 
 namespace NLE.Engine
 {
-    public class Prediction
+    class Prediction
     {
 
         public static Word[] simple(Words dictionary, string startWord)

@@ -1,7 +1,9 @@
+2013-08-26:
+stockage des tables de conjugaison ?
+structure des tables de conjugaison ?
+
 
 2013-08-22:
-Ecrire un système de loader indépendant du moteur de façons à pouvoir charger à partir d'un fichier, d'un esemble de fichiers ou d'un base de données...
-
 Système de règles ?
 Exemple :
 PHRASE - SUJET VERBE
