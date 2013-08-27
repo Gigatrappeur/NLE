@@ -18,9 +18,9 @@ Instead of a list, we could have a lexical tree. There are several advantages :
 			o
 			├───────┐
 			m   	n
-		┌───┤	      |
-		i	.	    e
-		|   		|
+		┌───┤   	|
+		i	.   	e
+		|   	  	|
 		c   		.
 		|
 		.
