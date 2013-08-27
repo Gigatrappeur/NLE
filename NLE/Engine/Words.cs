@@ -12,8 +12,18 @@ namespace NLE.Engine
 
     class Words
     {
-        // racine de l'arbre
+        // racine de l'arbre contenant la liste de mots
         private FragmentWord root;
+
+
+
+        // contient la liste des temps
+        public Dictionary<int, string> tenses {get; set; }
+
+        // contient la liste des personnes
+        public Dictionary<int, Person> persons {get; set; }
+
+
 
         // indique si le dictionnaire est déjà chargé
         private bool IsAlreadyLoaded;
@@ -29,6 +39,8 @@ namespace NLE.Engine
         {
             this.loader = loader;
             this.root = new FragmentWord(' ');
+            this.tenses = null;
+            this.persons = null;
         }
 
 

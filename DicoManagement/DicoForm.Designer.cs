@@ -66,11 +66,11 @@
             // 
             // detail
             // 
-            this.detail.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.detail.Location = new System.Drawing.Point(0, 0);
+            this.detail.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.detail.Location = new System.Drawing.Point(0, 380);
             this.detail.Multiline = true;
             this.detail.Name = "detail";
-            this.detail.Size = new System.Drawing.Size(462, 532);
+            this.detail.Size = new System.Drawing.Size(462, 152);
             this.detail.TabIndex = 0;
             // 
             // DicoForm

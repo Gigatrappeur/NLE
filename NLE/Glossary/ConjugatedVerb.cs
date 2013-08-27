@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NLE.Engine;
+
 namespace NLE.Glossary
 {
     public class ConjugatedVerb : Verb
@@ -14,10 +16,10 @@ namespace NLE.Glossary
         public InfinitiveVerb infinitive { get; private set; } 
 
         // il peut correspondre à plusieurs personnes
-        public string[] persons { get; private set; }
+        public Person[] persons { get; private set; }
 
 
-        public ConjugatedVerb(string v, string tense, InfinitiveVerb infinitive, string[] persons)
+        public ConjugatedVerb(string v, string tense, InfinitiveVerb infinitive, Person[] persons)
             : base(v)
         {
             this.addTypage("Conjugué");
@@ -28,7 +30,7 @@ namespace NLE.Glossary
 
             this.addTypage(this.tense);
             this.addTypage(this.infinitive != null ? this.infinitive.word : "unknown");
-            this.addTypage(string.Join(", ", persons));
+            this.addTypage(string.Join<Person>(", ", persons));
         }
     }
 }

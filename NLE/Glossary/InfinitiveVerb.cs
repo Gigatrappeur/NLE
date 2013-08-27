@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
+using NLE.Engine;
+
 namespace NLE.Glossary
 {
     public class InfinitiveVerb : Verb
@@ -11,14 +14,14 @@ namespace NLE.Glossary
         /// <summary>
         /// Contient les tables de conjugaison (par temps et par personne)
         /// </summary>
-        public Dictionary<string, Dictionary<string, ConjugatedVerb>> conjugationTables { get; set; }
+        public Dictionary<string, Dictionary<Person, ConjugatedVerb>> conjugationTables { get; set; }
 
         public InfinitiveVerb(string v)
             : base(v)
         {
             this.addTypage("Infinitif");
 
-            this.conjugationTables = new Dictionary<string, Dictionary<string, ConjugatedVerb>>();
+            this.conjugationTables = new Dictionary<string, Dictionary<Person, ConjugatedVerb>>();
         }
 
 

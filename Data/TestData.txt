@@ -1,7 +1,0 @@
-test Nom
-tester Verbe Infinitif
-mordre Verbe Infinitif
-testera Verbe Conjuguer futur_simple tester 3ieme_personne_singulier
-atome Nom
-atomique Adjectif
-atone Adjectif
