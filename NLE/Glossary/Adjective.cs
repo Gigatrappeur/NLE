@@ -8,8 +8,8 @@ namespace NLE.Glossary
     public class Adjective : Word
     {
 
-        public Adjective(string a)
-            : base(a)
+        public Adjective(string a, string definition)
+            : base(a, definition)
         {
             this.addTypage("Adjective");
 

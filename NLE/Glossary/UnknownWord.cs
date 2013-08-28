@@ -8,8 +8,8 @@ namespace NLE.Glossary
     public class UnknownWord : Word
     {
 
-        public UnknownWord(string u)
-            : base(u)
+        public UnknownWord(string u, string definition)
+            : base(u, definition)
         {
             this.addTypage("Unknown");
         }

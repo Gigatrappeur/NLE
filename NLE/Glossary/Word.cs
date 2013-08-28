@@ -9,12 +9,14 @@ namespace NLE.Glossary
     {
         public string word { get; private set; }
         public string typage { get; private set; }
+        public string definition { get; private set; }
 
 
-        public Word(string word)
+        public Word(string word, string definition = "")
         {
             this.word = word.ToLower();
             this.typage = "";
+            this.definition = definition;
         }
 
         protected void addTypage(string t)

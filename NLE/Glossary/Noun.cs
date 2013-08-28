@@ -18,8 +18,8 @@ namespace NLE.Glossary
         //   Concrete nouns and abstract nouns
 
 
-        public Noun(string n)
-            : base(n)
+        public Noun(string n, string definition)
+            : base(n, definition)
         {
             this.addTypage("Noun");
 

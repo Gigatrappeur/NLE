@@ -13,6 +13,7 @@ namespace NLE
         public delegate void LoadTerminated(bool success);
 
 
+        // --  propriétés pour le fonctionnement interne  ---------------------
 
         private static string dbpath = @"..\..\..\Data\fr-test.db";
 
@@ -80,6 +81,13 @@ namespace NLE
             return NLEEngine.dico.getAll();
         }
 
+        public static string language
+        {
+            get
+            {
+                return dico.language;
+            }
+        }
 
 
         // --  algorithme  ----------------------------------------------------

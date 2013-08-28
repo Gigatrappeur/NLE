@@ -58,6 +58,8 @@ namespace NLE.Loader
             }
 
 
+            dico.language = this.loadLanguage();
+
 
             // --  chargement des mots  ---------------------------------------
 
@@ -102,41 +104,51 @@ namespace NLE.Loader
         private Dictionary<int, Person> loadPersons()
         {
             Dictionary<int, Person> rt = new Dictionary<int, Person>();
-            List<Dictionary<string, object>> persons = this.db.select("persons", new string[] { "enum", "position", "number", "personal_pronoun", "description" });
+            List<Dictionary<string, object>> persons = this.db.select("persons", new string[] { "id", "enum", "position", "number", "personal_pronoun", "description" });
             for (int i = 0; i < persons.Count; i++)
             {
+                int id = (int)((Int64)persons[i]["id"]);
                 int e = (int)((decimal)persons[i]["enum"]);
                 int p = (int)((decimal)persons[i]["position"]);
                 string n = (string)persons[i]["number"];
                 string pp = (string)persons[i]["personal_pronoun"];
                 string d = (string)persons[i]["description"];
 
-                rt[e] = new Person(p, n, pp, d);
+                rt[e] = new Person(id, p, n, pp, d);
             }
 
             return rt;
+        }
+
+        private string loadLanguage()
+        {
+            List<Dictionary<string, object>> parametres = this.db.select("params", new string[] { "name", "value" }, new string[] { "name='language'" });
+            if (parametres.Count != 1)
+                throw new Exception("language unknown");
+
+            return (string)parametres[0]["value"];
         }
 
         private Word createWord(string w, string type, string attrs, string def)
         {
             switch (type.ToLower())
             {
-                case "nom":     return this.createNoun(w);
-                case "verbe":   return this.createVerb(w);
+                case "nom":     return this.createNoun(w, attrs, def);
+                case "verbe":   return this.createVerb(w, attrs, def);
                     /* ... */
-                default:        return new UnknownWord(w);
+                default:        return new UnknownWord(w, def);
             }
         }
 
-        private Noun createNoun(string n)
+        private Noun createNoun(string n, string attrs, string def)
         {
-            return new Noun(n);
+            return new Noun(n, def);
         }
 
-        private Verb createVerb(string v)
+        private Verb createVerb(string v, string attrs, string def)
         {
             // verbe à l'infinitif
-            InfinitiveVerb verb = new InfinitiveVerb(v);
+            InfinitiveVerb verb = new InfinitiveVerb(v, def);
 
             // chargement de la table de conjugaison
             List<Dictionary<string, object>> verbs = this.db.select("conjugated_verbs", new string[] { "tense", "person", "word" }, new string[] { "infinitive='" + verb.word + "'"});
@@ -158,6 +170,13 @@ namespace NLE.Loader
                 {
                     verb.conjugationTables[tense][persons[j]] = cv; // ajout du verbe conjugué pour toutes les personnes correspondantes
                 }
+            }
+
+            // trie des verbes conjugués par personne
+            var tenses = verb.conjugationTables.Keys.ToList();
+            foreach (var tense in tenses)
+            {
+                verb.conjugationTables[tense] = verb.conjugationTables[tense].OrderBy(kvp => kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             }
             
             return verb;

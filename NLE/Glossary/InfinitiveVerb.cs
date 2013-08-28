@@ -16,8 +16,8 @@ namespace NLE.Glossary
         /// </summary>
         public Dictionary<string, Dictionary<Person, ConjugatedVerb>> conjugationTables { get; set; }
 
-        public InfinitiveVerb(string v)
-            : base(v)
+        public InfinitiveVerb(string v, string definition)
+            : base(v, definition)
         {
             this.addTypage("Infinitif");
 

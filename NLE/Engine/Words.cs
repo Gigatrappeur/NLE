@@ -15,7 +15,8 @@ namespace NLE.Engine
         // racine de l'arbre contenant la liste de mots
         private FragmentWord root;
 
-
+        // langue du dico
+        public string language { get; set; }
 
         // contient la liste des temps
         public Dictionary<int, string> tenses {get; set; }

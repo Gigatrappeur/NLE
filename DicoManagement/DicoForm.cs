@@ -36,19 +36,23 @@ namespace DicoManagement
             }
 
             // on initialise la datasource
-            setDataSource();
+            endLoadingEngine();
         }
 
 
-        private delegate void setDataSourceDelegate();
-        private void setDataSource()
+        private delegate void endLoadingEngineDelegate();
+        private void endLoadingEngine()
         {
             if (this.listWords.InvokeRequired)
             {
-                this.Invoke(new setDataSourceDelegate(setDataSource), new object[] { });
+                this.Invoke(new endLoadingEngineDelegate(endLoadingEngine), new object[] { });
             }
             else
             {
+                int oldWidth = this.languageIndicator.Width;
+                this.languageIndicator.Text = Utils.firstLetterToUpper(NLEEngine.language);
+                this.languageIndicator.Left += oldWidth - this.languageIndicator.Width;
+
                 Word[] words = NLEEngine.getAll();
                 Array.Sort(words);
                 this.listWords.DisplayMember = "word";
@@ -60,10 +64,25 @@ namespace DicoManagement
         {
             if (listWords.SelectedItem == null) return;
 
+            // trace
             detail.Text = listWords.SelectedItem.ToString();
+
             if (listWords.SelectedItem is InfinitiveVerb)
             {
+                this.wordPanel.Visible = false;
+                this.verbPanel.Dock = DockStyle.Fill;
+                this.verbPanel.word = (Word)listWords.SelectedItem;
+                this.verbPanel.Visible = true;
+
+                // trace
                 detail.Text += Environment.NewLine + Environment.NewLine + (listWords.SelectedItem as InfinitiveVerb).ConjugationTablesToString();
+            }
+            else
+            {
+                this.verbPanel.Visible = false;
+                this.wordPanel.Dock = DockStyle.Fill;
+                this.wordPanel.word = (Word) listWords.SelectedItem;
+                this.wordPanel.Visible = true;
             }
         }
     }

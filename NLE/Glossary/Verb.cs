@@ -8,8 +8,8 @@ namespace NLE.Glossary
     public class Verb : Word
     {
 
-        public Verb(string v)
-            : base(v)
+        public Verb(string v, string definition = "")
+            : base(v, definition)
         {
 
             this.addTypage("Verb");
