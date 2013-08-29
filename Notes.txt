@@ -1,6 +1,9 @@
-2013-08-26:
-stockage des tables de conjugaison ?
-structure des tables de conjugaison ?
+2013-08-29:
+DicoManagement
+ - prévoir parser csv format dico (mot -> définition) avec parseur pour déterminer le type (nom, verbe...).
+ - prévoir un système permettant de récupérer conjugaison d'un verbe via un site ou autre
+
+ - prévoir export/import classique
 
 
 2013-08-22:

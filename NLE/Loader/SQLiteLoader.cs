@@ -32,11 +32,13 @@ namespace NLE.Loader
 
         bool ILoader.Load(Words dico)
         {
-            // charger le dico à partir d'une base SQLite
+            // chargement du dico à partir d'une base SQLite
 
             this.refdico = dico;
 
             this.db.connect();
+
+            this.createSchema();
 
             // ----------------------------------------------------------------
             // --  début des chargements  -------------------------------------
@@ -143,7 +145,8 @@ namespace NLE.Loader
             {
                 try
                 {
-                   return (Word) m.Invoke(this, new object[] { w, attrs, def });
+                    // on execute la méthode de création correspondante au type
+                    return (Word) m.Invoke(this, new object[] { w, attrs, def });
                 }
                 catch (Exception /*e*/)
                 {
@@ -243,14 +246,60 @@ namespace NLE.Loader
         {
             // créer le schéma
 
-            return false;
+            bool success = true;
+
+            if (success && !this.db.existsTable("params"))
+            {
+                // table params
+                // CREATE TABLE params (id INTEGER PRIMARY KEY, name TEXT, value TEXT);
+                // INSERT INTO params VALUES(1,'language','unknown');
+                success = success && this.db.createTable("params", new string[] { "id INTEGER PRIMARY KEY", "name TEXT", "value TEXT" });
+
+                if (success)
+                    success = success && this.db.insert("params", new string[] { "name", "value" }, new string[] { "language", "unknown" });
+            }
+
+            if (success && !this.db.existsTable("tenses"))
+            {
+                // table tenses
+                // CREATE TABLE tenses (id INTEGER PRIMARY KEY, name TEXT);
+                success = success && this.db.createTable("tenses", new string[] { "id INTEGER PRIMARY KEY", "name TEXT" });
+            }
+
+            if (success && !this.db.existsTable("persons"))
+            {
+                // table persons
+                // CREATE TABLE persons (id INTEGER PRIMARY KEY, enum NUMERIC, position NUMERIC, number TEXT, personal_pronoun TEXT, description TEXT);
+                success = success && this.db.createTable("persons", new string[] { "id INTEGER PRIMARY KEY", "enum NUMERIC", "position NUMERIC", "number TEXT", "personal_pronoun TEXT", "description TEXT" });
+            }
+
+            if (success && !this.db.existsTable("words"))
+            {
+                // table words
+                // CREATE TABLE words (id INTEGER PRIMARY KEY, word TEXT, type TEXT, attributs TEXT, definition TEXT);
+                success = success && this.db.createTable("words", new string[] { "id INTEGER PRIMARY KEY", "word TEXT", "type TEXT", "attributs TEXT", "definition TEXT" });
+            }
+
+            if (success && !this.db.existsTable("conjugated_verbs"))
+            {
+                // table conjugated_verbs
+                // CREATE TABLE conjugated_verbs (id INTEGER PRIMARY KEY, infinitive TEXT, tense NUMERIC, person NUMERIC, word TEXT);
+                success = success && this.db.createTable("conjugated_verbs", new string[] { "id INTEGER PRIMARY KEY", "infinitive TEXT", "tense NUMERIC", "person NUMERIC", "word TEXT" });
+            }
+
+
+            // table rules
+            // ...
+            // this.db.createTable("rules", new string[] { });
+
+            return success;
         }
 
 
         
 
 
-
+        // --  classe de gestion de la base de données SQLite  ----------------
 
         private class SQLiteDB
         {
@@ -336,6 +385,33 @@ namespace NLE.Loader
                 }
 
                 return resultat;
+            }
+
+            public bool createTable(string name, string[] fields)
+            {
+                this.query(@"CREATE TABLE " + name + " (" + string.Join(", ", fields) + ")");
+                return true;
+            }
+
+            public bool existsTable(string name)
+            {
+                List<Dictionary<string, object>> res = this.select("sqlite_master", new string[] {"count(name)"}, new string[] {"type = 'table'", "name = '" + name + "'"});
+                return ((long)res[0]["count(name)"]) == 1;
+            }
+
+            public bool insert(string table, string[] fields, string[] values)
+            {
+                string request = @"INSERT INTO " + table + " (" + string.Join(", ", fields) + ") VALUES ('" + string.Join("', '", values) + "')";
+                return this.query(request) == 1;
+            }
+
+            public int query(string request)
+            {
+                using (SQLiteCommand cmd = this.link.CreateCommand())
+                {
+                    cmd.CommandText = request;
+                    return cmd.ExecuteNonQuery();
+                }
             }
         }
     }

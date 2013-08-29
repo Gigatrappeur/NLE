@@ -85,5 +85,10 @@ namespace DicoManagement
                 this.wordPanel.Visible = true;
             }
         }
+
+        private void depuisCSVStandardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // charger DicFra.csv
+        }
     }
 }

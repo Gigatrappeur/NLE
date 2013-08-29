@@ -15,7 +15,7 @@ namespace NLE
 
         // --  propriétés pour le fonctionnement interne  ---------------------
 
-        private static string dbpath = @"..\..\..\Data\fr-test.db";
+        // remplacer par un parametre d'application : private static string dbpath = @"..\..\..\Data\fr-test.db";
 
         private static Words dico = null;
 
@@ -25,20 +25,20 @@ namespace NLE
 
         public static bool load()
         {
-            NLEEngine.dico = NLEEngine.createWords();
+            NLEEngine.dico = NLEEngine.createDico();
             return NLEEngine.dico.load();
         }
 
         //delegate void DloadAsyncNext(OnLoadTerminated callback);
         public static void loadAsync(LoadTerminated callback = null)
         {
-            NLEEngine.dico = NLEEngine.createWords();
+            NLEEngine.dico = NLEEngine.createDico();
 
             // chargement asynchrone
             new Thread(new ParameterizedThreadStart(NLEEngine.loadAsyncNext)).Start(callback);
         }
 
-        private static Words createWords()
+        private static Words createDico()
         {
             if (NLEEngine.dico != null)
             {
@@ -46,9 +46,11 @@ namespace NLE
 
             }
 
+            
+
 
             // paramétrer loader du moteur en fonction d'argument passer à la méthode load
-            SQLiteLoader loader = new SQLiteLoader(NLEEngine.dbpath);
+            SQLiteLoader loader = new SQLiteLoader(Properties.Settings.Default.dbpath);
 
 
            return new Words(loader);
@@ -83,10 +85,7 @@ namespace NLE
 
         public static string language
         {
-            get
-            {
-                return dico.language;
-            }
+            get { return dico.language; }
         }
 
 
