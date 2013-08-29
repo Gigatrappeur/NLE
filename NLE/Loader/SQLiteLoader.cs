@@ -129,23 +129,47 @@ namespace NLE.Loader
             return (string)parametres[0]["value"];
         }
 
-        private Word createWord(string w, string type, string attrs, string def)
+        public Word createWord(string w, string type, string attrs, string def)
         {
+            string method = "create" + type.Substring(0, 1).ToUpper() + type.Substring(1).ToLower();
+            var m = this.GetType().GetMethod(method);
+            if (m == null)
+            {
+                // TODO: logger le fait que "method" n'existe pas
+
+                return this.createUnknown(w, attrs, def);
+            }
+            else
+            {
+                try
+                {
+                   return (Word) m.Invoke(this, new object[] { w, attrs, def });
+                }
+                catch (Exception /*e*/)
+                {
+                    // TODO: logger exception
+
+                    return this.createUnknown(w, attrs, def);
+                }
+            }
+
+            /*
             switch (type.ToLower())
             {
                 case "nom":     return this.createNoun(w, attrs, def);
                 case "verbe":   return this.createVerb(w, attrs, def);
-                    /* ... */
+                    // ...
                 default:        return new UnknownWord(w, def);
             }
+            */
         }
 
-        private Noun createNoun(string n, string attrs, string def)
+        public Noun createNoun(string n, string attrs, string def)
         {
-            return new Noun(n, def);
+            return new Noun(n, attrs.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries), def);
         }
 
-        private Verb createVerb(string v, string attrs, string def)
+        public Verb createVerb(string v, string attrs, string def)
         {
             // verbe à l'infinitif
             InfinitiveVerb verb = new InfinitiveVerb(v, def);
@@ -180,6 +204,11 @@ namespace NLE.Loader
             }
             
             return verb;
+        }
+
+        public UnknownWord createUnknown(string u, string attrs, string def)
+        {
+            return new UnknownWord(u, def);
         }
 
         private string getTense(int i)

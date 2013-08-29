@@ -9,7 +9,11 @@ namespace NLE.Glossary
     {
 
         // gender : masculine, feminine and neuter
+
+        // si masculin, mettre une référence sur le feminin (et inversement) (si c'est possible !)
+        // idem pour le singulier/pluriel
         
+        // comment faire pour les noms propres ? On les stockes ?
 
         // Classification :
         //   Proper nouns and common nouns
@@ -18,18 +22,22 @@ namespace NLE.Glossary
         //   Concrete nouns and abstract nouns
 
 
-        public Noun(string n, string definition)
+        public Noun(string n, string[] attributs, string definition)
             : base(n, definition)
         {
             this.addTypage("Noun");
 
 
+
             // --  temporaire  ------------------------------------------------------------------------------
-            switch (n)
+            for (int i = 0; i < attributs.Length; i++)
+                this.addTypage(attributs[i]);
+
+            /*switch (n)
             {
                 case "test": this.addTypage("masculin, singulier"); break;
                 case "atome": this.addTypage("masculin, singulier"); break;
-            }
+            }*/
             // --  temporaire  ------------------------------------------------------------------------------
 
         }

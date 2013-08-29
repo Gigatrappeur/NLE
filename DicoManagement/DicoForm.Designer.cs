@@ -31,13 +31,13 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listWords = new System.Windows.Forms.ListBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.verbPanel = new DicoManagement.VerbPanel();
+            this.wordPanel = new DicoManagement.WordPanel();
             this.detail = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fichierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.languageIndicator = new System.Windows.Forms.Label();
-            this.verbPanel = new DicoManagement.VerbPanel();
-            this.wordPanel = new DicoManagement.WordPanel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -97,12 +97,31 @@
             this.splitContainer2.SplitterDistance = 379;
             this.splitContainer2.TabIndex = 1;
             // 
+            // verbPanel
+            // 
+            this.verbPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.verbPanel.Location = new System.Drawing.Point(3, 99);
+            this.verbPanel.Name = "verbPanel";
+            this.verbPanel.Size = new System.Drawing.Size(198, 90);
+            this.verbPanel.TabIndex = 1;
+            this.verbPanel.word = null;
+            // 
+            // wordPanel
+            // 
+            this.wordPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.wordPanel.Location = new System.Drawing.Point(3, 3);
+            this.wordPanel.Name = "wordPanel";
+            this.wordPanel.Size = new System.Drawing.Size(198, 90);
+            this.wordPanel.TabIndex = 0;
+            this.wordPanel.word = null;
+            // 
             // detail
             // 
             this.detail.Dock = System.Windows.Forms.DockStyle.Fill;
             this.detail.Location = new System.Drawing.Point(0, 0);
             this.detail.Multiline = true;
             this.detail.Name = "detail";
+            this.detail.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.detail.Size = new System.Drawing.Size(474, 109);
             this.detail.TabIndex = 0;
             // 
@@ -143,24 +162,6 @@
             this.languageIndicator.TabIndex = 3;
             this.languageIndicator.Text = "langue";
             this.languageIndicator.UseMnemonic = false;
-            // 
-            // verbPanel
-            // 
-            this.verbPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.verbPanel.Location = new System.Drawing.Point(3, 99);
-            this.verbPanel.Name = "verbPanel";
-            this.verbPanel.Size = new System.Drawing.Size(198, 90);
-            this.verbPanel.TabIndex = 1;
-            this.verbPanel.word = null;
-            // 
-            // wordPanel
-            // 
-            this.wordPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.wordPanel.Location = new System.Drawing.Point(3, 3);
-            this.wordPanel.Name = "wordPanel";
-            this.wordPanel.Size = new System.Drawing.Size(198, 90);
-            this.wordPanel.TabIndex = 0;
-            this.wordPanel.word = null;
             // 
             // DicoForm
             // 
