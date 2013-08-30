@@ -36,12 +36,31 @@ namespace DicoManagement
                         this.wordDefinition.Text = this._word.definition.Replace("\n", Environment.NewLine);
                     }
                 }
+
+                this.saveBtn.Enabled = false;
             }
         }
+
 
         public WordPanel()
         {
             InitializeComponent();
+        }
+
+
+        private void wordDefinition_TextChanged(object sender, EventArgs e)
+        {
+            this.enableSave();
+        }
+
+        private void saveBtn_Click(object sender, EventArgs e)
+        {
+            this.saveBtn.Enabled = false;
+        }
+
+        protected void enableSave()
+        {
+            this.saveBtn.Enabled = true;
         }
     }
 }

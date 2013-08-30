@@ -31,7 +31,7 @@ namespace DicoManagement
                     base.word = value;
 
                     this.conjugatedTablesWrapper.Controls.Clear();
-                    this.conjugatedTablesWrapper.Top = this.wordDefinition.Top + (this.wordDefinition.Text != "" ? this.wordDefinition.Height : 0) + this.wordDefinition.Margin.Bottom + this.conjugatedTablesWrapper.Margin.Top;
+                    this.conjugatedTablesWrapper.Top = this.wordDefinition.Top + this.wordDefinition.Height + this.wordDefinition.Margin.Bottom + this.conjugatedTablesWrapper.Margin.Top;
                     this.conjugatedTablesWrapper.Height = this.Height - this.conjugatedTablesWrapper.Top;
 
 
@@ -90,6 +90,7 @@ namespace DicoManagement
                             cv.Margin = new Padding(0);
                             cv.TabIndex = 1;
                             cv.Text = person.Value.word;
+                            cv.TextChanged += new EventHandler(cv_TextChanged);
                             listConjugatedVerb.Controls.Add(cv, 1, i); // ajout du control
 
 
@@ -105,8 +106,6 @@ namespace DicoManagement
 
                         if (rs != null) // pour le style de la dernière ligne
                             rs.Height = 20;
-
-                        //nextY += tenseGroup.Height;
                     }
                 }
                 else
@@ -114,6 +113,11 @@ namespace DicoManagement
                     base.word = null;
                 }
             }
+        }
+
+        void cv_TextChanged(object sender, EventArgs e)
+        {
+            this.enableSave();
         }
     }
 }

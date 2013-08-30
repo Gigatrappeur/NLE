@@ -15,6 +15,8 @@ namespace DicoManagement
 {
     public partial class DicoForm : Form
     {
+        private Word[] source = null;
+
         public DicoForm()
         {
             InitializeComponent();
@@ -53,10 +55,10 @@ namespace DicoManagement
                 this.languageIndicator.Text = Utils.firstLetterToUpper(NLEEngine.language);
                 this.languageIndicator.Left += oldWidth - this.languageIndicator.Width;
 
-                Word[] words = NLEEngine.getAll();
-                Array.Sort(words);
+                this.source = NLEEngine.getAll();
+                Array.Sort(this.source);
                 this.listWords.DisplayMember = "word";
-                this.listWords.DataSource = words;
+                this.listWords.DataSource = this.source;
             }
         }
 
@@ -89,6 +91,53 @@ namespace DicoManagement
         private void depuisCSVStandardToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // charger DicFra.csv
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.CheckFileExists = true;
+            dialog.CheckPathExists = true;
+            dialog.Multiselect = false;
+            dialog.Title = "Importer dictionnaire";
+            if (DialogResult.OK == dialog.ShowDialog())
+            {
+                string filename = dialog.FileName;
+
+                // ...
+            }
+        }
+
+
+
+        // --  Gestion recherche  ---------------------------------------------
+
+        private void searchWord_Enter(object sender, EventArgs e)
+        {
+            // focus in
+            if (this.searchWord.Text == "Rechercher...")
+            {
+                this.searchWord.Text = "";
+                this.searchWord.ForeColor = Color.Black;
+                this.searchWord.Font = new Font(this.searchWord.Font, FontStyle.Regular);
+            }
+        }
+
+        private void searchWord_Leave(object sender, EventArgs e)
+        {
+            // focus out
+            if (this.searchWord.Text == "")
+            {
+                this.searchWord.Text = "Rechercher...";
+                this.searchWord.ForeColor = Color.DarkGray;
+                this.searchWord.Font = new Font(this.searchWord.Font, FontStyle.Italic);
+            }
+        }
+
+        private void searchWord_KeyUp(object sender, KeyEventArgs e)
+        {
+            this.listWords.DataSource = this.source.Where(new Func<Word,bool>(wordListfilter)).ToArray();
+        }
+
+        private bool wordListfilter(Word w)
+        {
+            return w.word.IndexOf(this.searchWord.Text) > -1;
         }
     }
 }

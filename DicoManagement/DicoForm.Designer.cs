@@ -29,17 +29,18 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.searchWord = new System.Windows.Forms.TextBox();
             this.listWords = new System.Windows.Forms.ListBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.verbPanel = new DicoManagement.VerbPanel();
+            this.wordPanel = new DicoManagement.WordPanel();
             this.detail = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fichierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.languageIndicator = new System.Windows.Forms.Label();
-            this.verbPanel = new DicoManagement.VerbPanel();
-            this.wordPanel = new DicoManagement.WordPanel();
             this.importerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.depuisCSVStandardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.languageIndicator = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -59,6 +60,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.searchWord);
             this.splitContainer1.Panel1.Controls.Add(this.listWords);
             // 
             // splitContainer1.Panel2
@@ -68,14 +70,31 @@
             this.splitContainer1.SplitterDistance = 239;
             this.splitContainer1.TabIndex = 0;
             // 
+            // searchWord
+            // 
+            this.searchWord.Dock = System.Windows.Forms.DockStyle.Top;
+            this.searchWord.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchWord.ForeColor = System.Drawing.Color.DarkGray;
+            this.searchWord.Location = new System.Drawing.Point(0, 0);
+            this.searchWord.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.searchWord.Name = "searchWord";
+            this.searchWord.Size = new System.Drawing.Size(239, 20);
+            this.searchWord.TabIndex = 1;
+            this.searchWord.Text = "Rechercher...";
+            this.searchWord.Enter += new System.EventHandler(this.searchWord_Enter);
+            this.searchWord.KeyUp += new System.Windows.Forms.KeyEventHandler(this.searchWord_KeyUp);
+            this.searchWord.Leave += new System.EventHandler(this.searchWord_Leave);
+            // 
             // listWords
             // 
-            this.listWords.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listWords.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.listWords.FormattingEnabled = true;
             this.listWords.IntegralHeight = false;
-            this.listWords.Location = new System.Drawing.Point(0, 0);
+            this.listWords.Location = new System.Drawing.Point(0, 23);
             this.listWords.Name = "listWords";
-            this.listWords.Size = new System.Drawing.Size(239, 492);
+            this.listWords.Size = new System.Drawing.Size(239, 469);
             this.listWords.TabIndex = 0;
             this.listWords.SelectedIndexChanged += new System.EventHandler(this.listWords_SelectedIndexChanged);
             // 
@@ -98,6 +117,26 @@
             this.splitContainer2.Size = new System.Drawing.Size(474, 492);
             this.splitContainer2.SplitterDistance = 379;
             this.splitContainer2.TabIndex = 1;
+            // 
+            // verbPanel
+            // 
+            this.verbPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.verbPanel.Location = new System.Drawing.Point(3, 99);
+            this.verbPanel.Name = "verbPanel";
+            this.verbPanel.Size = new System.Drawing.Size(198, 90);
+            this.verbPanel.TabIndex = 1;
+            this.verbPanel.Visible = false;
+            this.verbPanel.word = null;
+            // 
+            // wordPanel
+            // 
+            this.wordPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.wordPanel.Location = new System.Drawing.Point(3, 3);
+            this.wordPanel.Name = "wordPanel";
+            this.wordPanel.Size = new System.Drawing.Size(198, 90);
+            this.wordPanel.TabIndex = 0;
+            this.wordPanel.Visible = false;
+            this.wordPanel.word = null;
             // 
             // detail
             // 
@@ -127,6 +166,21 @@
             this.fichierToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.fichierToolStripMenuItem.Text = "Fichier";
             // 
+            // importerToolStripMenuItem
+            // 
+            this.importerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.depuisCSVStandardToolStripMenuItem});
+            this.importerToolStripMenuItem.Name = "importerToolStripMenuItem";
+            this.importerToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.importerToolStripMenuItem.Text = "Importer";
+            // 
+            // depuisCSVStandardToolStripMenuItem
+            // 
+            this.depuisCSVStandardToolStripMenuItem.Name = "depuisCSVStandardToolStripMenuItem";
+            this.depuisCSVStandardToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.depuisCSVStandardToolStripMenuItem.Text = "Depuis CSV (Dictionnaire)";
+            this.depuisCSVStandardToolStripMenuItem.Click += new System.EventHandler(this.depuisCSVStandardToolStripMenuItem_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Location = new System.Drawing.Point(0, 516);
@@ -149,41 +203,6 @@
             this.languageIndicator.Text = "langue";
             this.languageIndicator.UseMnemonic = false;
             // 
-            // verbPanel
-            // 
-            this.verbPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.verbPanel.Location = new System.Drawing.Point(3, 99);
-            this.verbPanel.Name = "verbPanel";
-            this.verbPanel.Size = new System.Drawing.Size(198, 90);
-            this.verbPanel.TabIndex = 1;
-            this.verbPanel.Visible = false;
-            this.verbPanel.word = null;
-            // 
-            // wordPanel
-            // 
-            this.wordPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.wordPanel.Location = new System.Drawing.Point(3, 3);
-            this.wordPanel.Name = "wordPanel";
-            this.wordPanel.Size = new System.Drawing.Size(198, 90);
-            this.wordPanel.TabIndex = 0;
-            this.wordPanel.Visible = false;
-            this.wordPanel.word = null;
-            // 
-            // importerToolStripMenuItem
-            // 
-            this.importerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.depuisCSVStandardToolStripMenuItem});
-            this.importerToolStripMenuItem.Name = "importerToolStripMenuItem";
-            this.importerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.importerToolStripMenuItem.Text = "Importer";
-            // 
-            // depuisCSVStandardToolStripMenuItem
-            // 
-            this.depuisCSVStandardToolStripMenuItem.Name = "depuisCSVStandardToolStripMenuItem";
-            this.depuisCSVStandardToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.depuisCSVStandardToolStripMenuItem.Text = "Depuis CSV (Dictionnaire)";
-            this.depuisCSVStandardToolStripMenuItem.Click += new System.EventHandler(this.depuisCSVStandardToolStripMenuItem_Click);
-            // 
             // DicoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -195,9 +214,10 @@
             this.Controls.Add(this.statusStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DicoForm";
-            this.Text = "DicoForm";
+            this.Text = "Gestion du dictionnaire";
             this.Load += new System.EventHandler(this.DicoForm_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
@@ -227,5 +247,6 @@
         private WordPanel wordPanel;
         private System.Windows.Forms.ToolStripMenuItem importerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem depuisCSVStandardToolStripMenuItem;
+        private System.Windows.Forms.TextBox searchWord;
     }
 }

@@ -25,7 +25,7 @@ namespace NLE.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("..\\..\\..\\Data\\fr.db")]
+        [global::System.Configuration.DefaultSettingValueAttribute("..\\..\\..\\Data\\fr-test.db")]
         public string dbpath {
             get {
                 return ((string)(this["dbpath"]));
