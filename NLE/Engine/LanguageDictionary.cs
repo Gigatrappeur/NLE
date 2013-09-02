@@ -10,7 +10,7 @@ using NLE.Loader;
 namespace NLE.Engine
 {
 
-    class Words
+    class LanguageDictionary
     {
         // racine de l'arbre contenant la liste de mots
         private FragmentWord root;
@@ -36,7 +36,7 @@ namespace NLE.Engine
         /// Constructeur du dictionnaire
         /// </summary>
         /// <param name="loader">Objet permettant de gérer les opération entre le dictionnaire et son support de stockage</param>
-        public Words(ILoader loader = null)
+        public LanguageDictionary(ILoader loader = null)
         {
             this.loader = loader;
             this.root = new FragmentWord(' ');
@@ -80,7 +80,12 @@ namespace NLE.Engine
         public Word get(string w)
         {
             FragmentWord rt = this.getFragment(w);
-            return (rt != null ? rt.word : null);
+            if (rt == null || rt.words.Count == 0)
+                return null;
+            else if (rt.words.Count == 1)
+                return rt.words[0];
+            else
+                return rt.words[0]; // temporaire
         }
 
 
@@ -157,13 +162,13 @@ namespace NLE.Engine
             private Dictionary<char, FragmentWord> childs;
 
             public char fragment { get; private set; }
-            public Word word { get; private set; }
+            public List<Word> words { get; private set; }
 
             public FragmentWord(char fragment)
             {
                 this.childs = new Dictionary<char, FragmentWord>();
                 this.fragment = fragment;
-                this.word = null;
+                this.words = new List<Word>();
             }
 
             private FragmentWord search(char c)
@@ -198,9 +203,10 @@ namespace NLE.Engine
                 {
                     return f.AddFragment(w, substr.Substring(1)); // on propage l'ajout
                 }
-                else if (substr.Length == 1 && f.word == null)
+                else if (substr.Length == 1)// && f.word == null)
                 {
-                    f.word = w;
+                    // vérifier que le type est bien différent. (on peut avoir plusieurs fois le même mot avec un type différent !
+                    f.words.Add(w);
                     return true; // on a ajouté le mot
                 }
 
@@ -210,8 +216,8 @@ namespace NLE.Engine
             public Word[] getAll()
             {
                 List<Word> rt = new List<Word>();
-                if (this.word != null)
-                    rt.Add(this.word);
+                if (this.words.Count > 0)
+                    rt.AddRange(this.words);
 
                 foreach (var item in this.childs)
                 {
@@ -230,7 +236,7 @@ namespace NLE.Engine
             {
                 String rt = this.fragment + Environment.NewLine;
 
-                int i = (this.word != null ? 0 : 1);
+                int i = (this.words != null ? 0 : 1);
                 foreach (var item in this.childs)
                 {
                     string next = (i > this.childs.Count - 1 ? "  " : "| ");
@@ -240,9 +246,10 @@ namespace NLE.Engine
                     i++;
                 }
 
-                if (this.word != null)
+                if (this.words.Count > 0)
                 {
-                    rt += startLine + "+-" + this.word + Environment.NewLine + startLine + Environment.NewLine;
+                    for (int j = 0; j < this.words.Count; j++)
+                        rt += startLine + "+-" + this.words[j] + Environment.NewLine + startLine + Environment.NewLine;
                 }
 
                 return rt;

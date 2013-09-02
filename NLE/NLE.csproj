@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Engine\Person.cs" />
     <Compile Include="Engine\Rule.cs" />
+    <Compile Include="Loader\GlossaryFactory.cs" />
     <Compile Include="NLEEngine.cs" />
     <Compile Include="Glossary\Adjective.cs" />
     <Compile Include="Glossary\ConjugatedVerb.cs" />
@@ -56,7 +57,7 @@
     <Compile Include="Glossary\UnknownWord.cs" />
     <Compile Include="Glossary\Verb.cs" />
     <Compile Include="Loader\SQLiteLoader.cs" />
-    <Compile Include="Engine\Words.cs" />
+    <Compile Include="Engine\LanguageDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Glossary\Word.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

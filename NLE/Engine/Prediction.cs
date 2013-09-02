@@ -10,7 +10,7 @@ namespace NLE.Engine
     class Prediction
     {
 
-        public static Word[] simple(Words dictionary, string startWord)
+        public static Word[] simple(LanguageDictionary dictionary, string startWord)
         {
             return dictionary.getAll(startWord);
         }

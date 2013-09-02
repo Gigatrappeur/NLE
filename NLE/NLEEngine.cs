@@ -17,7 +17,7 @@ namespace NLE
 
         // remplacer par un parametre d'application : private static string dbpath = @"..\..\..\Data\fr-test.db";
 
-        private static Words dico = null;
+        private static LanguageDictionary dico = null;
 
 
 
@@ -38,7 +38,7 @@ namespace NLE
             new Thread(new ParameterizedThreadStart(NLEEngine.loadAsyncNext)).Start(callback);
         }
 
-        private static Words createDico()
+        private static LanguageDictionary createDico()
         {
             if (NLEEngine.dico != null)
             {
@@ -53,7 +53,7 @@ namespace NLE
             SQLiteLoader loader = new SQLiteLoader(Properties.Settings.Default.dbpath);
 
 
-           return new Words(loader);
+           return new LanguageDictionary(loader);
         }
 
         private static void loadAsyncNext(object callback)

@@ -1,3 +1,6 @@
+2013-09-02:
+problème pour les mots à plusieurs type : exemple "le"
+
 2013-08-29:
 DicoManagement
  - prévoir parser csv format dico (mot -> définition) avec parseur pour déterminer le type (nom, verbe...).

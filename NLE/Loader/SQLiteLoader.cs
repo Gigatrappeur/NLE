@@ -17,7 +17,7 @@ namespace NLE.Loader
 
 
         // utilisé uniquement pour le chargement !
-        private Words refdico = null;
+        //private LanguageDictionary refdico = null;
 
 
         public SQLiteLoader(string filename)
@@ -30,11 +30,11 @@ namespace NLE.Loader
             this.db.close();
         }
 
-        bool ILoader.Load(Words dico)
+        bool ILoader.Load(LanguageDictionary dico)
         {
             // chargement du dico à partir d'une base SQLite
 
-            this.refdico = dico;
+            //this.refdico = dico;
 
             this.db.connect();
 
@@ -52,15 +52,19 @@ namespace NLE.Loader
                 // une erreur s'est produite lors du chargement des personnes
             }
 
-
             dico.tenses = this.loadTenses();
             if (dico.tenses == null)
             {
                 // une erreur s'est produite lors du chargement des personnes
             }
 
-
             dico.language = this.loadLanguage();
+
+
+
+            // chargement factory
+            GlossaryFactory factory = new GlossaryFactory(dico.tenses, dico.persons, this);
+
 
 
             // --  chargement des mots  ---------------------------------------
@@ -72,7 +76,7 @@ namespace NLE.Loader
                 string t = (string)words[i]["type"];
                 string a = (string)words[i]["attributs"];
                 string d = (string)words[i]["definition"];
-                Word word = this.createWord(w, t, a, d);
+                Word word = factory.create(w, t, a, d);
                 dico.AddWord(word);
             }
 
@@ -82,8 +86,7 @@ namespace NLE.Loader
 
             this.db.close();
 
-
-            this.refdico = null;
+            //this.refdico = null;
 
             return true;
         }
@@ -131,110 +134,21 @@ namespace NLE.Loader
             return (string)parametres[0]["value"];
         }
 
-        public Word createWord(string w, string type, string attrs, string def)
+        List<ConjugatedVerb> ILoader.getConjugatedVerbsFor(InfinitiveVerb verb, GlossaryFactory factory)
         {
-            string method = "create" + type.Substring(0, 1).ToUpper() + type.Substring(1).ToLower();
-            var m = this.GetType().GetMethod(method);
-            if (m == null)
-            {
-                // TODO: logger le fait que "method" n'existe pas
+            List<Dictionary<string, object>> verbsRaw = this.db.select("conjugated_verbs", new string[] { "tense", "person", "word" }, new string[] { "infinitive='" + verb.word + "'" });
 
-                return this.createUnknown(w, attrs, def);
-            }
-            else
+            List<ConjugatedVerb> verbs = new List<ConjugatedVerb>();
+            for (int i = 0; i < verbsRaw.Count; i++)
             {
-                try
-                {
-                    // on execute la méthode de création correspondante au type
-                    return (Word) m.Invoke(this, new object[] { w, attrs, def });
-                }
-                catch (Exception /*e*/)
-                {
-                    // TODO: logger exception
+                int t = (int)((decimal)verbsRaw[i]["tense"]);
+                int p = (int)((decimal)verbsRaw[i]["person"]);
+                string w = (string)verbsRaw[i]["word"];
 
-                    return this.createUnknown(w, attrs, def);
-                }
+                verbs.Add(factory.create_ConjugatedVerb(w, verb, t, p));
             }
 
-            /*
-            switch (type.ToLower())
-            {
-                case "nom":     return this.createNoun(w, attrs, def);
-                case "verbe":   return this.createVerb(w, attrs, def);
-                    // ...
-                default:        return new UnknownWord(w, def);
-            }
-            */
-        }
-
-        public Noun createNoun(string n, string attrs, string def)
-        {
-            return new Noun(n, attrs.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries), def);
-        }
-
-        public Verb createVerb(string v, string attrs, string def)
-        {
-            // verbe à l'infinitif
-            InfinitiveVerb verb = new InfinitiveVerb(v, def);
-
-            // chargement de la table de conjugaison
-            List<Dictionary<string, object>> verbs = this.db.select("conjugated_verbs", new string[] { "tense", "person", "word" }, new string[] { "infinitive='" + verb.word + "'"});
-            for (int i = 0; i < verbs.Count; i++)
-            {
-                int t = (int)((decimal)verbs[i]["tense"]);
-                int p = (int)((decimal)verbs[i]["person"]);
-                string w = (string)verbs[i]["word"];
-
-                string tense = this.getTense(t);
-                Person[] persons = this.getPersons(p);
-
-                ConjugatedVerb cv = new ConjugatedVerb(w, tense, verb, persons);
-
-                if (!verb.conjugationTables.ContainsKey(tense)) // on créé la table correspondante au temps
-                    verb.conjugationTables[tense] = new Dictionary<Person, ConjugatedVerb>();
-
-                for (int j = 0; j < persons.Length; j++)
-                {
-                    verb.conjugationTables[tense][persons[j]] = cv; // ajout du verbe conjugué pour toutes les personnes correspondantes
-                }
-            }
-
-            // trie des verbes conjugués par personne
-            var tenses = verb.conjugationTables.Keys.ToList();
-            foreach (var tense in tenses)
-            {
-                verb.conjugationTables[tense] = verb.conjugationTables[tense].OrderBy(kvp => kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-            }
-            
-            return verb;
-        }
-
-        public UnknownWord createUnknown(string u, string attrs, string def)
-        {
-            return new UnknownWord(u, def);
-        }
-
-        private string getTense(int i)
-        {
-            return this.refdico.tenses[i];
-        }
-
-        private Person[] getPersons(int i)
-        {
-            Dictionary<int, Person> persons = this.refdico.persons.OrderByDescending(kvp => kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-            List<Person> resultat = new List<Person>();
-            int current = i;
-            foreach (var person in persons)
-            {
-                if (current - person.Key >= 0)
-                {
-                    current -= person.Key;
-                    resultat.Add(person.Value);
-                }
-            }
-
-            resultat.Reverse();
-            return resultat.ToArray();
+            return verbs;
         }
 
         bool ILoader.UnLoad()
