@@ -1,5 +1,16 @@
+2013-09-03:
+mode (infinitif - impératif - subjonctif ...)
+
+problématique multitype (mot qui peut être soit un nom soit un verbe)
+Word<T> ?
+VerbAndNoun : Verb, Noun ?
+
+penser à ajouter les verbes conjugués dans l'arbre.
+
+
 2013-09-02:
 problème pour les mots à plusieurs type : exemple "le"
+
 
 2013-08-29:
 DicoManagement
