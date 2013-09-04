@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace Analyse
 {
-    public partial class Form1 : Form
+    public partial class AnalyseForm : Form
     {
-        public Form1()
+        public AnalyseForm()
         {
             InitializeComponent();
         }

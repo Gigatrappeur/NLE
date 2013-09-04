@@ -26,7 +26,8 @@ namespace DicoManagement
             }
             set
             {
-                if (value is Verb)
+                // TODO: en attente des tables de conjugaisons
+                /*if (value is VerbType)
                 {
                     base.word = value;
 
@@ -35,7 +36,7 @@ namespace DicoManagement
                     this.conjugatedTablesWrapper.Height = this.Height - this.conjugatedTablesWrapper.Top;
 
 
-                    foreach (var table in (this.word as InfinitiveVerb).conjugationTables)
+                    foreach (var table in (this.word as InfinitiveVerbType).conjugationTables)
                     {
                         // 
                         // tenseGroup
@@ -111,7 +112,7 @@ namespace DicoManagement
                 else
                 {
                     base.word = null;
-                }
+                }*/
             }
         }
 

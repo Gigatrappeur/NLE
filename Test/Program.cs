@@ -123,9 +123,9 @@ namespace Test
 
             Console.WriteLine(NLEEngine.showDico());
 
-            InfinitiveVerb tester = (InfinitiveVerb)NLEEngine.get("tester");
+            Word tester = NLEEngine.get("tester");
 
-            Console.WriteLine(tester.ConjugationTablesToString());
+            Console.WriteLine(tester);
         }
 
     }

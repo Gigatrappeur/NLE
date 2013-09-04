@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 
 using NLE.Glossary;
+using NLE.Grammar;
 using NLE.Loader;
 
 namespace NLE.Engine
@@ -17,6 +18,9 @@ namespace NLE.Engine
 
         // langue du dico
         public string language { get; set; }
+
+        // contient la liste des modes
+        public Dictionary<int, string> moods { get; set; }
 
         // contient la liste des temps
         public Dictionary<int, string> tenses {get; set; }
@@ -80,12 +84,7 @@ namespace NLE.Engine
         public Word get(string w)
         {
             FragmentWord rt = this.getFragment(w);
-            if (rt == null || rt.words.Count == 0)
-                return null;
-            else if (rt.words.Count == 1)
-                return rt.words[0];
-            else
-                return rt.words[0]; // temporaire
+            return (rt != null ? rt.word : null);
         }
 
 
@@ -162,13 +161,13 @@ namespace NLE.Engine
             private Dictionary<char, FragmentWord> childs;
 
             public char fragment { get; private set; }
-            public List<Word> words { get; private set; }
+            public Word word { get; private set; }
 
             public FragmentWord(char fragment)
             {
                 this.childs = new Dictionary<char, FragmentWord>();
                 this.fragment = fragment;
-                this.words = new List<Word>();
+                this.word = null;
             }
 
             private FragmentWord search(char c)
@@ -203,11 +202,18 @@ namespace NLE.Engine
                 {
                     return f.AddFragment(w, substr.Substring(1)); // on propage l'ajout
                 }
-                else if (substr.Length == 1)// && f.word == null)
+                else if (substr.Length == 1)
                 {
-                    // vérifier que le type est bien différent. (on peut avoir plusieurs fois le même mot avec un type différent !
-                    f.words.Add(w);
-                    return true; // on a ajouté le mot
+                    if (f.word == null)
+                    {
+                        f.word = w;
+                        return true; // on a ajouté le mot
+                    }
+                    else
+                    {
+                        // vérifier que le type est bien différent. (on peut avoir plusieurs fois le même mot avec un type différent !
+                        // TODO: écrire code correspondant !
+                    }
                 }
 
                 return false; // on a rien ajouté
@@ -216,8 +222,8 @@ namespace NLE.Engine
             public Word[] getAll()
             {
                 List<Word> rt = new List<Word>();
-                if (this.words.Count > 0)
-                    rt.AddRange(this.words);
+                if (this.word != null)
+                    rt.Add(this.word);
 
                 foreach (var item in this.childs)
                 {
@@ -236,7 +242,7 @@ namespace NLE.Engine
             {
                 String rt = this.fragment + Environment.NewLine;
 
-                int i = (this.words != null ? 0 : 1);
+                int i = (this.word != null ? 0 : 1);
                 foreach (var item in this.childs)
                 {
                     string next = (i > this.childs.Count - 1 ? "  " : "| ");
@@ -246,10 +252,9 @@ namespace NLE.Engine
                     i++;
                 }
 
-                if (this.words.Count > 0)
+                if (this.word != null)
                 {
-                    for (int j = 0; j < this.words.Count; j++)
-                        rt += startLine + "+-" + this.words[j] + Environment.NewLine + startLine + Environment.NewLine;
+                    rt += startLine + "+-" + this.word + Environment.NewLine + startLine + Environment.NewLine;
                 }
 
                 return rt;

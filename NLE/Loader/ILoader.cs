@@ -18,6 +18,6 @@ namespace NLE.Loader
 
 
         // pour récupérer la liste des verbs conjugués correspondante au verbe à l'infinitif
-        List<ConjugatedVerb> getConjugatedVerbsFor(InfinitiveVerb verb, GlossaryFactory factory);
+        //List<ConjugatedVerbType> getConjugatedVerbsFor(InfinitiveVerbType verb, Factory factory);
     }
 }

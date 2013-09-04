@@ -69,7 +69,14 @@ namespace DicoManagement
             // trace
             detail.Text = listWords.SelectedItem.ToString();
 
-            if (listWords.SelectedItem is InfinitiveVerb)
+            bool isVerb = false;
+            if (listWords.SelectedItem is Word)
+            {
+                isVerb = (listWords.SelectedItem as Word).IsTypeOf(typeof(VerbType));
+            }
+
+
+            if (isVerb)
             {
                 this.wordPanel.Visible = false;
                 this.verbPanel.Dock = DockStyle.Fill;
@@ -77,7 +84,8 @@ namespace DicoManagement
                 this.verbPanel.Visible = true;
 
                 // trace
-                detail.Text += Environment.NewLine + Environment.NewLine + (listWords.SelectedItem as InfinitiveVerb).ConjugationTablesToString();
+                //detail.Text += Environment.NewLine + Environment.NewLine + (listWords.SelectedItem as InfinitiveVerbType).ConjugationTablesToString();
+                detail.Text += Environment.NewLine + Environment.NewLine + "l'affichage des tables sont en cours développement !";
             }
             else
             {

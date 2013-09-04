@@ -2,31 +2,67 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections.ObjectModel;
 
 namespace NLE.Glossary
 {
-    public abstract class Word : IComparable<Word>
+    public interface WordType
+    {
+
+    }
+
+    public class Word : IComparable<Word>
     {
         public string word { get; private set; }
-        public string typage { get; private set; }
         public string definition { get; private set; }
 
 
-        public Word(string word, string definition = "")
+        private List<WordType> _types;
+        public ReadOnlyCollection<WordType> types
+        {
+            get
+            {
+                return this._types.AsReadOnly();
+            }
+        }
+
+
+        public Word(string word, WordType type, string definition = "")
+            : this(word, new WordType[] { type }, definition)
+        {
+        }
+
+        public Word(string word, WordType[] types, string definition = "")
         {
             this.word = word.ToLower();
-            this.typage = "";
+            //this.typage = "";
+
+            this._types = new List<WordType>();
+            this._types.AddRange(types);
+
             this.definition = definition;
         }
 
-        protected void addTypage(string t)
+        public bool IsTypeOf(Type t)
         {
-            this.typage += (this.typage != "" ? ", " : "") + t;
+            foreach (var type in this._types)
+            {
+                if (type.GetType() == t)
+                    return true;
+            }
+
+            return false;
         }
 
         public override string ToString()
         {
-            return this.word + " [" + this.typage + "]";
+            string rt = this.word + " ";
+            foreach (var key in this._types)
+            {
+                rt += key.ToString();
+            }
+
+            return rt;
         }
 
 

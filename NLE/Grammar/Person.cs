@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NLE.Engine
+namespace NLE.Grammar
 {
 
     // représente une personne
@@ -34,6 +34,16 @@ namespace NLE.Engine
         public int CompareTo(Person other)
         {
             return this.ordre.CompareTo(other.ordre);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Person && this.CompareTo(obj as Person) == 0;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

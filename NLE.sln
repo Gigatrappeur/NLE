@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DicoManagement", "DicoManag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyse", "Analyse\Analyse.csproj", "{DDF6814B-5E9E-453C-A26F-E507F685D130}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Performances", "Performances\Performances.csproj", "{A357DAD7-9161-4325-B6A5-ACE239D142CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,16 @@ Global
 		{DDF6814B-5E9E-453C-A26F-E507F685D130}.Release|Mixed Platforms.Build.0 = Release|x86
 		{DDF6814B-5E9E-453C-A26F-E507F685D130}.Release|x86.ActiveCfg = Release|x86
 		{DDF6814B-5E9E-453C-A26F-E507F685D130}.Release|x86.Build.0 = Release|x86
+		{A357DAD7-9161-4325-B6A5-ACE239D142CA}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A357DAD7-9161-4325-B6A5-ACE239D142CA}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{A357DAD7-9161-4325-B6A5-ACE239D142CA}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{A357DAD7-9161-4325-B6A5-ACE239D142CA}.Debug|x86.ActiveCfg = Debug|x86
+		{A357DAD7-9161-4325-B6A5-ACE239D142CA}.Debug|x86.Build.0 = Debug|x86
+		{A357DAD7-9161-4325-B6A5-ACE239D142CA}.Release|Any CPU.ActiveCfg = Release|x86
+		{A357DAD7-9161-4325-B6A5-ACE239D142CA}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{A357DAD7-9161-4325-B6A5-ACE239D142CA}.Release|Mixed Platforms.Build.0 = Release|x86
+		{A357DAD7-9161-4325-B6A5-ACE239D142CA}.Release|x86.ActiveCfg = Release|x86
+		{A357DAD7-9161-4325-B6A5-ACE239D142CA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SQLite;
 
 using NLE.Glossary;
+using NLE.Grammar;
 using NLE.Engine;
 
 namespace NLE.Loader
@@ -46,6 +47,12 @@ namespace NLE.Loader
 
             // --  chargement des tables de paramètres  -----------------------
 
+            dico.moods = this.loadMoods();
+            if (dico.moods == null)
+            {
+                // une erreur s'est produite lors du chargement des personnes
+            }
+
             dico.persons = this.loadPersons();
             if (dico.persons == null)
             {
@@ -63,7 +70,7 @@ namespace NLE.Loader
 
 
             // chargement factory
-            GlossaryFactory factory = new GlossaryFactory(dico.tenses, dico.persons, this);
+            Factory factory = new Factory(null, dico.tenses, dico.persons, this);
 
 
 
@@ -76,10 +83,17 @@ namespace NLE.Loader
                 string t = (string)words[i]["type"];
                 string a = (string)words[i]["attributs"];
                 string d = (string)words[i]["definition"];
-                Word word = factory.create(w, t, a, d);
+
+                if (a == null) a = "";
+                if (d == null) d = "";
+
+                Word word = factory.create(w, t, a.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries), d);
                 dico.AddWord(word);
             }
 
+
+            // charger table de conjugaison
+            
 
             // --  fin des chargements  ---------------------------------------
             // ----------------------------------------------------------------
@@ -125,6 +139,12 @@ namespace NLE.Loader
             return rt;
         }
 
+        private Dictionary<int, string> loadMoods()
+        {
+            //  TODO: écrire chargement
+            return null;
+        }
+
         private string loadLanguage()
         {
             List<Dictionary<string, object>> parametres = this.db.select("params", new string[] { "name", "value" }, new string[] { "name='language'" });
@@ -134,11 +154,11 @@ namespace NLE.Loader
             return (string)parametres[0]["value"];
         }
 
-        List<ConjugatedVerb> ILoader.getConjugatedVerbsFor(InfinitiveVerb verb, GlossaryFactory factory)
+        /*List<ConjugatedVerbType> ILoader.getConjugatedVerbsFor(InfinitiveVerbType verb, Factory factory)
         {
             List<Dictionary<string, object>> verbsRaw = this.db.select("conjugated_verbs", new string[] { "tense", "person", "word" }, new string[] { "infinitive='" + verb.word + "'" });
 
-            List<ConjugatedVerb> verbs = new List<ConjugatedVerb>();
+            List<ConjugatedVerbType> verbs = new List<ConjugatedVerbType>();
             for (int i = 0; i < verbsRaw.Count; i++)
             {
                 int t = (int)((decimal)verbsRaw[i]["tense"]);
@@ -149,7 +169,7 @@ namespace NLE.Loader
             }
 
             return verbs;
-        }
+        }*/
 
         bool ILoader.UnLoad()
         {

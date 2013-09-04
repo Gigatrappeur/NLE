@@ -1,9 +1,18 @@
-2013-09-03:
-mode (infinitif - impératif - subjonctif ...)
+2013-09-04:
+Description solution :
+Projet Analyse : programme permettant d'analyser un texte.
+Projet DicoManagement : programme pour gérer le dictionnaire
+Projet NLE : librairie du moteur
+Projet Performances : programme pour faire des tests de performance
+Projet Test : programme pour faire des tests (par exemple, des tests de non régression)
 
-problématique multitype (mot qui peut être soit un nom soit un verbe)
-Word<T> ?
-VerbAndNoun : Verb, Noun ?
+Prévoir une table de correspondance [EN vers langue du dico]
+Exemple :
+singular -> singulier
+
+
+2013-09-03:
+Faire une classe par mode (indicatif, conditionnel, impératif, subjonctif, infinitif et participe) ?
 
 penser à ajouter les verbes conjugués dans l'arbre.
 
