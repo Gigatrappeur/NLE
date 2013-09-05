@@ -67,6 +67,7 @@ namespace NLE.Loader
 
             dico.language = this.loadLanguage();
 
+            Utils.translations = this.loadTranslations();
 
 
             // chargement factory
@@ -88,8 +89,36 @@ namespace NLE.Loader
                 if (d == null) d = "";
 
                 Word word = factory.create(w, t, a.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries), d);
+
+                if (word.IsTypeOf(typeof(VerbType)))
+                {
+                    //charger la table de conjugaison
+
+                }
+
                 dico.AddWord(word);
             }
+
+            // test
+            ConjugationTable partirTable = new ConjugationTable();
+            Word partir = new Word("partir", new VerbType("infinitif", null, null, partirTable));
+            partirTable.setBase(partir);
+            partirTable.Add(partir);
+            dico.AddWord(partir);
+
+            Word jePars = new Word("pars", new VerbType("indicatif", "présent", new Person(1, 1, "1", "je", "je..."), null));
+            Word tuPars = new Word("pars", new VerbType("indicatif", "présent", new Person(1, 2, "2", "tu", "tu..."), null));
+            Word ilPart = new Word("part", new VerbType("indicatif", "présent", new Person(1, 3, "4", "il", "il..."), null));
+
+            partirTable.Add(jePars);
+            partirTable.Add(tuPars);
+            partirTable.Add(ilPart);
+            
+            dico.AddWord(jePars);
+            dico.AddWord(tuPars);
+            dico.AddWord(ilPart);
+
+
 
 
             // charger table de conjugaison
@@ -114,7 +143,7 @@ namespace NLE.Loader
                 int id = (int)((Int64)tenses[i]["id"]);
                 string n = (string)tenses[i]["name"];
 
-                rt[id] = n;
+                rt.Add(id, n);
             }
 
             return rt;
@@ -133,7 +162,7 @@ namespace NLE.Loader
                 string pp = (string)persons[i]["personal_pronoun"];
                 string d = (string)persons[i]["description"];
 
-                rt[e] = new Person(id, p, n, pp, d);
+                rt.Add(e, new Person(id, p, n, pp, d));
             }
 
             return rt;
@@ -152,6 +181,22 @@ namespace NLE.Loader
                 throw new Exception("language unknown");
 
             return (string)parametres[0]["value"];
+        }
+
+        private Dictionary<string, string> loadTranslations()
+        {
+            Dictionary<string, string> rt = new Dictionary<string, string>();
+            List<Dictionary<string, object>> translations = this.db.select("translations", new string[] { "key", "value" });
+
+            for (int i = 0; i < translations.Count; i++)
+            {
+                string k = (string)translations[i]["key"];
+                string v = (string)translations[i]["value"];
+
+                rt.Add(k, v);
+            }
+
+            return rt;
         }
 
         /*List<ConjugatedVerbType> ILoader.getConjugatedVerbsFor(InfinitiveVerbType verb, Factory factory)
@@ -191,6 +236,13 @@ namespace NLE.Loader
 
                 if (success)
                     success = success && this.db.insert("params", new string[] { "name", "value" }, new string[] { "language", "unknown" });
+            }
+
+            if (success && !this.db.existsTable("translations"))
+            {
+                // table translations
+                // CREATE TABLE translations (key TEXT, value TEXT);
+                success = success && this.db.createTable("translations", new string[] { "key TEXT", "value TEXT" });
             }
 
             if (success && !this.db.existsTable("tenses"))

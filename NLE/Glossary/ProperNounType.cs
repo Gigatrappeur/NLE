@@ -9,7 +9,7 @@ namespace NLE.Glossary
     {
         public override string ToString()
         {
-            return "[proper noun]";
+            return "[" + Utils.translate("proper noun") + "]";
         }
     }
 }

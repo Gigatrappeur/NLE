@@ -36,7 +36,7 @@ namespace NLE.Glossary
         
         public override string ToString()
         {
-            return "[verb, " + this.mood + (this.person != null ? ", " + this.person.ToString() : "") + (this.tense != null ? ", " + this.tense:"") + "]";
+            return "[" + Utils.translate("verb") + ", " + Utils.translate(this.mood) + (this.person != null ? ", " + this.person.ToString() : "") + (this.tense != null ? ", " + Utils.translate(this.tense):"") + "]";
         }
 
         public override bool Equals(object obj)

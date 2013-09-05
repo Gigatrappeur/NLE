@@ -73,13 +73,6 @@ namespace NLE.Loader
 
         public CommonNounType createNounType(string[] attrs)
         {
-
-            /*CommonNounType.Gender g = CommonNounType.Gender.Unknown;
-            foreach (CommonNounType.Gender item in Enum.GetValues(typeof(CommonNounType.Gender)))
-            {
-                if (attrs.Contains(item.ToString().ToLower()))
-                    g = item;
-            }*/
             CommonNounType.Gender g = this.getEnumIfFound(attrs, CommonNounType.Gender.Unknown);
             CommonNounType.Number n = this.getEnumIfFound(attrs, CommonNounType.Number.Unknown);
 
@@ -88,19 +81,18 @@ namespace NLE.Loader
 
         private T getEnumIfFound<T>(string[] attrs, T defaut)
         {
-            T e = defaut;
             foreach (T item in Enum.GetValues(typeof(T)))
             {
                 if (attrs.Contains(item.ToString().ToLower()))
-                    e = item;
+                    return item;
             }
-            return e;
+            return defaut;
         }
 
 
         public VerbType createVerbType(string[] attrs)
         {
-            return new VerbType("infinitive", null, null, new ConjugationTable());
+            return new VerbType("infinitive", null, null, null);
 
 
             // chargement de la table de conjugaison

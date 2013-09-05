@@ -69,14 +69,20 @@ namespace DicoManagement
             // trace
             detail.Text = listWords.SelectedItem.ToString();
 
-            bool isVerb = false;
+            bool isVerb = false, isBaseVerb = false;
             if (listWords.SelectedItem is Word)
             {
                 isVerb = (listWords.SelectedItem as Word).IsTypeOf(typeof(VerbType));
+                foreach (WordType type in (listWords.SelectedItem as Word).types)
+	            {
+                    if (type is VerbType && (type as VerbType).table != null && (type as VerbType).table.verbBase == (listWords.SelectedItem as Word))
+                        isBaseVerb = true;
+	            }
+                
             }
 
 
-            if (isVerb)
+            if (isBaseVerb)
             {
                 this.wordPanel.Visible = false;
                 this.verbPanel.Dock = DockStyle.Fill;

@@ -54,6 +54,27 @@ namespace NLE.Glossary
             return false;
         }
 
+        public List<WordType> getTypes(Type type)
+        {
+            List<WordType> rt = new List<WordType>();
+            foreach (WordType item in this._types)
+            {
+                if (item.GetType() == type)
+                    rt.Add(item);
+            }
+            return rt;
+        }
+
+        public void AddType(WordType type)
+        {
+            this._types.Add(type);
+        }
+
+        public void AddRangeType(IList<WordType> types)
+        {
+            this._types.AddRange(types);
+        }
+
         public override string ToString()
         {
             string rt = this.word + " ";

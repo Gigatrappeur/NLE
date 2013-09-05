@@ -9,7 +9,7 @@ namespace NLE.Glossary
     {
         public override string ToString()
         {
-            return "[unknown]";
+            return "[" + Utils.translate("unknown") + "]";
         }
     }
 }

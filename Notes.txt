@@ -6,19 +6,12 @@ Projet NLE : librairie du moteur
 Projet Performances : programme pour faire des tests de performance
 Projet Test : programme pour faire des tests (par exemple, des tests de non régression)
 
-Prévoir une table de correspondance [EN vers langue du dico]
-Exemple :
-singular -> singulier
 
 
 2013-09-03:
 Faire une classe par mode (indicatif, conditionnel, impératif, subjonctif, infinitif et participe) ?
 
 penser à ajouter les verbes conjugués dans l'arbre.
-
-
-2013-09-02:
-problème pour les mots à plusieurs type : exemple "le"
 
 
 2013-08-29:

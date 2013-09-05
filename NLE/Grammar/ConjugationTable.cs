@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NLE.Glossary;
+
 namespace NLE.Grammar
 {
     public class ConjugationTable
@@ -11,5 +13,50 @@ namespace NLE.Grammar
         //représente une table de conjugaison (liste de conjugaison pour un temp)
 
         // gestion des modes ?
+        public Word verbBase;
+        public Dictionary<string, Dictionary<string, Dictionary<Person, Word>>> table;
+
+        public ConjugationTable()
+        {
+            this.verbBase = null;
+            this.table = new Dictionary<string, Dictionary<string, Dictionary<Person, Word>>>();
+        }
+
+        public void setBase(Word verbBase)
+        {
+            if (!verbBase.IsTypeOf(typeof(VerbType)))
+            {
+                throw new Exception(verbBase + " is not verb!");
+            }
+
+            this.verbBase = verbBase;
+        }
+
+        public void Add(Word verb)
+        {
+            if (!verb.IsTypeOf(typeof(VerbType)))
+            {
+                throw new Exception(verb + " is not verb!");
+            }
+
+            foreach (WordType type in verb.types)
+            {
+                if (type is VerbType)
+                {
+                    VerbType tv = (type as VerbType);
+
+                    // tv.table == null ?
+
+                    string tense = (tv.tense != null ? tv.tense : "");
+                    Person person = (tv.person != null ? tv.person : new Person(0, 0, "0", "none", "none"));
+
+                    if (!this.table.ContainsKey(tv.mood)) this.table.Add(tv.mood, new Dictionary<string, Dictionary<Person, Word>>());
+                    if (!this.table[tv.mood].ContainsKey(tense)) this.table[tv.mood].Add(tense, new Dictionary<Person, Word>());
+                    
+                    this.table[tv.mood][tense].Add(person, verb);
+
+                }
+            }
+        }
     }
 }

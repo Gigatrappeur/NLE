@@ -211,8 +211,19 @@ namespace NLE.Engine
                     }
                     else
                     {
-                        // vérifier que le type est bien différent. (on peut avoir plusieurs fois le même mot avec un type différent !
+                        // vérifier que le type est bien différent. (on peut avoir plusieurs fois le même mot avec un type différent !)
                         // TODO: écrire code correspondant !
+                        bool identicalSequences = true;
+                        foreach (WordType type in w.types)
+	                    {
+		                     if (!f.word.types.Contains(type))
+                             {
+                                 identicalSequences = false;
+                                 f.word.AddType(type);
+                             }
+	                    }
+
+                        return !identicalSequences; // on a ajouté au moins un type
                     }
                 }
 

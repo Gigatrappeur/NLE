@@ -35,7 +35,7 @@ namespace NLE.Glossary
 
         public override string ToString()
         {
-            return "[common noun, " + this.gender.ToString().ToLower() + ", " + this.number.ToString().ToLower() + "]";
+            return "[" + Utils.translate("common noun") + ", " + Utils.translate(this.gender.ToString()) + ", " + Utils.translate(this.number.ToString()) + "]";
         }
     }
 }

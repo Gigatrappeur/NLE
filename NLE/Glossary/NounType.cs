@@ -24,7 +24,7 @@ namespace NLE.Glossary
 
         public override string ToString()
         {
-            return "[noun]";
+            return "[" + Utils.translate("noun") + "]";
         }
     }
 }
