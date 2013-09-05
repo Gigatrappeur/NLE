@@ -177,6 +177,9 @@ namespace NLE.Engine
 
             public FragmentWord get(string w)
             {
+                if (w == null || w.Length == 0)
+                    return null;
+
                 FragmentWord fw = this.search(w[0]);
                 if (fw == null)
                     return null; // mot pas trouvé

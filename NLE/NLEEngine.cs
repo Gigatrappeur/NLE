@@ -91,6 +91,11 @@ namespace NLE
 
         // --  algorithme  ----------------------------------------------------
 
+        public static Word[] lexicalAnalyse(string text)
+        {
+            return Analyse.lexical(text);
+        }
+
         public static Word[] predictionSimple(string startWord)
         {
             return Prediction.simple(NLEEngine.dico, startWord);

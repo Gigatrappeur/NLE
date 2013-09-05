@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\Analyse.cs" />
     <Compile Include="Grammar\ConjugationTable.cs" />
     <Compile Include="Grammar\Person.cs" />
     <Compile Include="Engine\Rule.cs" />
