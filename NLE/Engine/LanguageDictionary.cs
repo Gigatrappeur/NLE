@@ -16,6 +16,9 @@ namespace NLE.Engine
         // racine de l'arbre contenant la liste de mots
         private FragmentWord root;
 
+        // liste des tables de conjugaison
+        public List<ConjugationTable> conjugaisonTables { get; set; }
+
         // langue du dico
         public string language { get; set; }
 
@@ -44,6 +47,7 @@ namespace NLE.Engine
         {
             this.loader = loader;
             this.root = new FragmentWord(' ');
+            this.conjugaisonTables = new List<ConjugationTable>();
             this.tenses = null;
             this.persons = null;
         }
@@ -70,9 +74,19 @@ namespace NLE.Engine
         /// </summary>
         /// <param name="w">Mot à ajouter</param>
         /// <returns>Si le mot a été ajouté, retourne true</returns>
-        public bool AddWord(Word w)
+        public bool Add(Word w)
         {
             return this.root.AddFragment(w, w.word);
+        }
+
+        public bool AddRange(Word[] list)
+        {
+            bool success = true;
+            foreach (Word item in list)
+            {
+                success = success && this.Add(item);
+            }
+            return success;
         }
         
 

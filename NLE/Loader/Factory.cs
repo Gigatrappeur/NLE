@@ -14,14 +14,15 @@ namespace NLE.Loader
         private Dictionary<int, string> moods;
         private Dictionary<int, string> tenses;
         private Dictionary<int, Person> persons;
-        private ILoader loader;
+        //private ILoader loader;
 
         public Factory(Dictionary<int, string> moods, Dictionary<int, string> tenses, Dictionary<int, Person> persons, ILoader loader)
         {
             this.tenses = tenses;
-            this.persons = persons.OrderByDescending(kvp => kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            this.persons = persons;//.OrderByDescending(kvp => kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            this.moods = moods;
 
-            this.loader = loader;
+            //this.loader = loader;
         }
 
 
@@ -79,6 +80,36 @@ namespace NLE.Loader
             return new CommonNounType(g, n);
         }
 
+
+        public VerbType createVerbType(string[] attrs)
+        {
+            if (attrs.Length == 3)
+            {
+                try
+                {
+                    int m = int.Parse(attrs[0]);
+                    int t = int.Parse(attrs[1]);
+                    int p = int.Parse(attrs[2]);
+                    return this.createVerbType(m, t, p);
+                }
+                catch (Exception)
+                {
+                    // logger erreur
+                }
+            }
+
+            return new VerbType(this.getMood(1), null, null);
+        }
+
+        private VerbType createVerbType(int mood, int tense, int person)
+        {
+            return new VerbType(this.getMood(mood), this.getTense(tense), this.getPersons(person));
+        }
+
+
+
+
+
         private T getEnumIfFound<T>(string[] attrs, T defaut)
         {
             foreach (T item in Enum.GetValues(typeof(T)))
@@ -90,52 +121,22 @@ namespace NLE.Loader
         }
 
 
-        public VerbType createVerbType(string[] attrs)
+
+        private string getMood(int i)
         {
-            return new VerbType("infinitive", null, null, null);
-
-
-            // chargement de la table de conjugaison
-            /*List<ConjugatedVerbType> verbs = this.loader.getConjugatedVerbsFor(verb, this);
-            for (int i = 0; i < verbs.Count; i++)
-            {
-                string tense = verbs[i].tense;
-                Person[] persons = verbs[i].persons;
-
-                if (!verb.conjugationTables.ContainsKey(tense)) // on créé la table correspondante au temps
-                    verb.conjugationTables[tense] = new Dictionary<Person, ConjugatedVerbType>();
-
-                for (int j = 0; j < persons.Length; j++)
-                {
-                    verb.conjugationTables[tense][persons[j]] = verbs[i]; // ajout du verbe conjugué pour toutes les personnes correspondantes
-                }
-            }
-
-            // trie des verbes conjugués par personne
-            var tenses = verb.conjugationTables.Keys.ToList();
-            foreach (var tense in tenses)
-            {
-                verb.conjugationTables[tense] = verb.conjugationTables[tense].OrderBy(kvp => kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-            }*/
-
+            return (this.moods.ContainsKey(i) ? this.moods[i] : "");
         }
-
-        /*public ConjugatedVerbType create_ConjugatedVerb(string v, InfinitiveVerbType infinitive, int tense, int persons)
-        {
-            return new ConjugatedVerbType(v, this.getTense(tense), infinitive, this.getPersons(persons));
-        }*/
-
-
-
 
         private string getTense(int i)
         {
-            return this.tenses[i];
+            return (this.tenses.ContainsKey(i) ? this.tenses[i] : "");
         }
 
-        private Person[] getPersons(int i)
+        private Person getPersons(int i)
         {
-            List<Person> resultat = new List<Person>();
+            return (this.persons.ContainsKey(i) ? this.persons[i] : new Person(0, 0, "", "", ""));
+
+            /*List<Person> resultat = new List<Person>();
             int current = i;
             foreach (var person in this.persons)
             {
@@ -147,7 +148,7 @@ namespace NLE.Loader
             }
 
             resultat.Reverse();
-            return resultat.ToArray();
+            return resultat.ToArray();*/
         }
 
     }

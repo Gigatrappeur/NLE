@@ -56,9 +56,12 @@ namespace DicoManagement
                 this.languageIndicator.Left += oldWidth - this.languageIndicator.Width;
 
                 this.source = NLEEngine.getAll();
-                Array.Sort(this.source);
                 this.listWords.DisplayMember = "word";
-                this.listWords.DataSource = this.source;
+                List<Word> finalList = new List<Word>();
+                finalList.AddRange(this.source.Where(VerbType.IsInfinitiveVerb));
+                finalList.AddRange(this.source.Where(VerbType.IsNotVerb));
+                finalList.Sort();
+                this.listWords.DataSource = finalList;
             }
         }
 

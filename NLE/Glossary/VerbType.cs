@@ -20,18 +20,18 @@ namespace NLE.Glossary
         public string tense { get; private set; }
 
         // référence vers la table de conjugaison
-        public ConjugationTable table { get; private set; } 
+        public ConjugationTable table { get; set; } 
 
         // il peut correspondre à plusieurs personnes
         public Person person { get; private set; }
 
 
-        public VerbType(string mood, string tense, Person person, ConjugationTable table)
+        public VerbType(string mood, string tense, Person person)
         {
             this.mood = mood;
             this.tense = tense;
             this.person = person;
-            this.table = table;
+            this.table = null;
         }
         
         public override string ToString()
@@ -49,5 +49,24 @@ namespace NLE.Glossary
             return base.GetHashCode();
         }
 
+
+
+        // --  filtre  --------------------------------------------------------
+
+        public static bool IsInfinitiveVerb(Word w)
+        {
+            VerbType[] verbs = w.getTypesOf<VerbType>();
+            foreach (VerbType item in verbs)
+            {
+                if (item.table.verbBase == w)
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool IsNotVerb(Word w)
+        {
+            return !w.IsTypeOf(typeof(VerbType));
+        }
     }
 }

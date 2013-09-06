@@ -36,7 +36,7 @@ namespace DicoManagement
                     this.conjugatedTablesWrapper.Top = this.wordDefinition.Top + this.wordDefinition.Height + this.wordDefinition.Margin.Bottom + this.conjugatedTablesWrapper.Margin.Top;
                     this.conjugatedTablesWrapper.Height = this.Height - this.conjugatedTablesWrapper.Top;
 
-                    ConjugationTable ct = (word.getTypes(typeof(VerbType))[0] as VerbType).table;
+                    ConjugationTable ct = word.getTypesOf<VerbType>()[0].table;
 
                     foreach (var mood in ct.table)
 	                {

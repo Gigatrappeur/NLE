@@ -54,15 +54,15 @@ namespace NLE.Glossary
             return false;
         }
 
-        public List<WordType> getTypes(Type type)
+        public T[] getTypesOf<T>()
         {
-            List<WordType> rt = new List<WordType>();
+            List<T> rt = new List<T>();
             foreach (WordType item in this._types)
             {
-                if (item.GetType() == type)
-                    rt.Add(item);
+                if (item is T) // if (item.GetType() == typeof(T))
+                    rt.Add((T)item);
             }
-            return rt;
+            return rt.ToArray();
         }
 
         public void AddType(WordType type)

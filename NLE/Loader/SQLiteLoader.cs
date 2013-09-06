@@ -71,7 +71,7 @@ namespace NLE.Loader
 
 
             // chargement factory
-            Factory factory = new Factory(null, dico.tenses, dico.persons, this);
+            Factory factory = new Factory(dico.moods, dico.tenses, dico.persons, this);
 
 
 
@@ -93,37 +93,17 @@ namespace NLE.Loader
                 if (word.IsTypeOf(typeof(VerbType)))
                 {
                     //charger la table de conjugaison
-
+                    Word[] verbsConjugated = this.getConjugatedVerbsFor(word.word, factory);
+                    ConjugationTable table = new ConjugationTable(word);
+                    table.AddRange(verbsConjugated); // ajout des verbes à la table de conjugaison
+                    dico.conjugaisonTables.Add(table); // ajout de la table de conjugaison au dictionnaire
+                    dico.AddRange(verbsConjugated); // ajout des verbes au dictionnaire
                 }
 
-                dico.AddWord(word);
+                dico.Add(word);
             }
 
-            // test
-            ConjugationTable partirTable = new ConjugationTable();
-            Word partir = new Word("partir", new VerbType("infinitif", null, null, partirTable));
-            partirTable.setBase(partir);
-            partirTable.Add(partir);
-            dico.AddWord(partir);
-
-            Word jePars = new Word("pars", new VerbType("indicatif", "présent", new Person(1, 1, "1", "je", "je..."), null));
-            Word tuPars = new Word("pars", new VerbType("indicatif", "présent", new Person(1, 2, "2", "tu", "tu..."), null));
-            Word ilPart = new Word("part", new VerbType("indicatif", "présent", new Person(1, 3, "4", "il", "il..."), null));
-
-            partirTable.Add(jePars);
-            partirTable.Add(tuPars);
-            partirTable.Add(ilPart);
             
-            dico.AddWord(jePars);
-            dico.AddWord(tuPars);
-            dico.AddWord(ilPart);
-
-
-
-
-            // charger table de conjugaison
-            
-
             // --  fin des chargements  ---------------------------------------
             // ----------------------------------------------------------------
 
@@ -152,17 +132,16 @@ namespace NLE.Loader
         private Dictionary<int, Person> loadPersons()
         {
             Dictionary<int, Person> rt = new Dictionary<int, Person>();
-            List<Dictionary<string, object>> persons = this.db.select("persons", new string[] { "id", "enum", "position", "number", "personal_pronoun", "description" });
+            List<Dictionary<string, object>> persons = this.db.select("persons", new string[] { "id", "position", "number", "personal_pronoun", "description" });
             for (int i = 0; i < persons.Count; i++)
             {
                 int id = (int)((Int64)persons[i]["id"]);
-                int e = (int)((decimal)persons[i]["enum"]);
                 int p = (int)((decimal)persons[i]["position"]);
                 string n = (string)persons[i]["number"];
                 string pp = (string)persons[i]["personal_pronoun"];
                 string d = (string)persons[i]["description"];
 
-                rt.Add(e, new Person(id, p, n, pp, d));
+                rt.Add(id, new Person(id, p, n, pp, d));
             }
 
             return rt;
@@ -170,8 +149,17 @@ namespace NLE.Loader
 
         private Dictionary<int, string> loadMoods()
         {
-            //  TODO: écrire chargement
-            return null;
+            Dictionary<int, string> rt = new Dictionary<int, string>();
+            List<Dictionary<string, object>> moods = this.db.select("moods", new string[] { "id", "name" });
+            for (int i = 0; i < moods.Count; i++)
+            {
+                int id = (int)((Int64)moods[i]["id"]);
+                string n = (string)moods[i]["name"];
+
+                rt.Add(id, n);
+            }
+
+            return rt;
         }
 
         private string loadLanguage()
@@ -199,22 +187,24 @@ namespace NLE.Loader
             return rt;
         }
 
-        /*List<ConjugatedVerbType> ILoader.getConjugatedVerbsFor(InfinitiveVerbType verb, Factory factory)
+        
+        private Word[] getConjugatedVerbsFor(string v, Factory factory)
         {
-            List<Dictionary<string, object>> verbsRaw = this.db.select("conjugated_verbs", new string[] { "tense", "person", "word" }, new string[] { "infinitive='" + verb.word + "'" });
+            List<Dictionary<string, object>> verbsRaw = this.db.select("conjugated_verbs", new string[] { "mood", "tense", "person", "word" }, new string[] { "base='" + v + "'" });
 
-            List<ConjugatedVerbType> verbs = new List<ConjugatedVerbType>();
+            List<Word> verbs = new List<Word>();
             for (int i = 0; i < verbsRaw.Count; i++)
             {
+                int m = (int)((decimal)verbsRaw[i]["mood"]);
                 int t = (int)((decimal)verbsRaw[i]["tense"]);
                 int p = (int)((decimal)verbsRaw[i]["person"]);
                 string w = (string)verbsRaw[i]["word"];
 
-                verbs.Add(factory.create_ConjugatedVerb(w, verb, t, p));
+                verbs.Add(factory.create(w, "verb", new string[] { m.ToString(), t.ToString(), p.ToString() }, ""));
             }
 
-            return verbs;
-        }*/
+            return verbs.ToArray();
+        }
 
         bool ILoader.UnLoad()
         {
@@ -245,6 +235,13 @@ namespace NLE.Loader
                 success = success && this.db.createTable("translations", new string[] { "key TEXT", "value TEXT" });
             }
 
+            if (success && !this.db.existsTable("moods"))
+            {
+                // table moods
+                // CREATE TABLE moods (id INTEGER PRIMARY KEY, name TEXT);
+                success = success && this.db.createTable("moods", new string[] { "id INTEGER PRIMARY KEY", "name TEXT" });
+            }
+
             if (success && !this.db.existsTable("tenses"))
             {
                 // table tenses
@@ -255,8 +252,8 @@ namespace NLE.Loader
             if (success && !this.db.existsTable("persons"))
             {
                 // table persons
-                // CREATE TABLE persons (id INTEGER PRIMARY KEY, enum NUMERIC, position NUMERIC, number TEXT, personal_pronoun TEXT, description TEXT);
-                success = success && this.db.createTable("persons", new string[] { "id INTEGER PRIMARY KEY", "enum NUMERIC", "position NUMERIC", "number TEXT", "personal_pronoun TEXT", "description TEXT" });
+                // CREATE TABLE persons (id INTEGER PRIMARY KEY, position NUMERIC, number TEXT, personal_pronoun TEXT, description TEXT);
+                success = success && this.db.createTable("persons", new string[] { "id INTEGER PRIMARY KEY", "position NUMERIC", "number TEXT", "personal_pronoun TEXT", "description TEXT" });
             }
 
             if (success && !this.db.existsTable("words"))
@@ -269,8 +266,8 @@ namespace NLE.Loader
             if (success && !this.db.existsTable("conjugated_verbs"))
             {
                 // table conjugated_verbs
-                // CREATE TABLE conjugated_verbs (id INTEGER PRIMARY KEY, infinitive TEXT, tense NUMERIC, person NUMERIC, word TEXT);
-                success = success && this.db.createTable("conjugated_verbs", new string[] { "id INTEGER PRIMARY KEY", "infinitive TEXT", "tense NUMERIC", "person NUMERIC", "word TEXT" });
+                // CREATE TABLE conjugated_verbs (id INTEGER PRIMARY KEY, base TEXT, mood NUMERIC, tense NUMERIC, person NUMERIC, word TEXT);
+                success = success && this.db.createTable("conjugated_verbs", new string[] { "id INTEGER PRIMARY KEY", "base TEXT", "mood NUMERIC", "tense NUMERIC", "person NUMERIC", "word TEXT" });
             }
 
 
