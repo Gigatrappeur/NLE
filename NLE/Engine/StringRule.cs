@@ -17,13 +17,13 @@ namespace NLE.Engine
     //      
     //      rule r : SUJET - Determinant Noun
     //      ...
-    class Rule
+    class StringRule
     {
         public string conclusion { get; private set; }
         public string[] premises { get; private set; }
 
 
-        public Rule(string conclusion, string[] premises)
+        public StringRule(string conclusion, string[] premises)
         {
             this.conclusion = conclusion;
             this.premises = premises;

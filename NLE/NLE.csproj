@@ -44,9 +44,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Engine\Analyse.cs" />
+    <Compile Include="Engine\InferenceRule.cs" />
+    <Compile Include="Engine\InferencesEngine.cs" />
+    <Compile Include="Glossary\PhraseItem.cs" />
+    <Compile Include="Glossary\Punctuation.cs" />
+    <Compile Include="Glossary\WordType.cs" />
     <Compile Include="Grammar\ConjugationTable.cs" />
     <Compile Include="Grammar\Person.cs" />
-    <Compile Include="Engine\Rule.cs" />
+    <Compile Include="Engine\StringRule.cs" />
     <Compile Include="Glossary\CommonNounType.cs" />
     <Compile Include="Glossary\ProperNounType.cs" />
     <Compile Include="Loader\Factory.cs" />

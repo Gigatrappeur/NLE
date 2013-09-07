@@ -52,7 +52,9 @@ namespace Analyse
 
         private void analyseBtn_Click(object sender, EventArgs e)
         {
-            this.resultatAnalyseText.Text = string.Join<NLE.Glossary.Word>(Environment.NewLine, NLEEngine.lexicalAnalyse(this.analyseText.Text));
+            //this.resultatAnalyseText.Text = string.Join<NLE.Glossary.Word>(Environment.NewLine, NLEEngine.lexicalAnalyse(this.analyseText.Text));
+
+            this.resultatAnalyseText.Text = NLEEngine.testTrasformation(this.analyseText.Text);
         }
 
         private void predictionText_KeyUp(object sender, KeyEventArgs e)

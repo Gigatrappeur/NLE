@@ -14,15 +14,13 @@ namespace NLE.Loader
         private Dictionary<int, string> moods;
         private Dictionary<int, string> tenses;
         private Dictionary<int, Person> persons;
-        //private ILoader loader;
 
-        public Factory(Dictionary<int, string> moods, Dictionary<int, string> tenses, Dictionary<int, Person> persons, ILoader loader)
+        public Factory(Dictionary<int, string> moods, Dictionary<int, string> tenses, Dictionary<int, Person> persons)
         {
             this.tenses = tenses;
             this.persons = persons;//.OrderByDescending(kvp => kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             this.moods = moods;
 
-            //this.loader = loader;
         }
 
 
@@ -109,7 +107,7 @@ namespace NLE.Loader
 
 
 
-
+        // méthode permettant de chercher une valeur d'enum en fonction du nom de l'enum
         private T getEnumIfFound<T>(string[] attrs, T defaut)
         {
             foreach (T item in Enum.GetValues(typeof(T)))
@@ -135,20 +133,6 @@ namespace NLE.Loader
         private Person getPersons(int i)
         {
             return (this.persons.ContainsKey(i) ? this.persons[i] : new Person(0, 0, "", "", ""));
-
-            /*List<Person> resultat = new List<Person>();
-            int current = i;
-            foreach (var person in this.persons)
-            {
-                if (current - person.Key >= 0)
-                {
-                    current -= person.Key;
-                    resultat.Add(person.Value);
-                }
-            }
-
-            resultat.Reverse();
-            return resultat.ToArray();*/
         }
 
     }

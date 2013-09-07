@@ -17,10 +17,6 @@ namespace NLE.Loader
         private SQLiteDB db = null;
 
 
-        // utilisé uniquement pour le chargement !
-        //private LanguageDictionary refdico = null;
-
-
         public SQLiteLoader(string filename)
         {
             this.db = new SQLiteDB(filename);
@@ -31,48 +27,25 @@ namespace NLE.Loader
             this.db.close();
         }
 
-        bool ILoader.Load(LanguageDictionary dico)
+        // --  début des chargements  -------------------------------------
+        void ILoader.beforeLoading()
+        {
+            this.db.connect();
+            this.createSchema();
+        }
+
+        // --  fin des chargements  ---------------------------------------
+        void ILoader.afterLoading()
+        {
+            this.db.close();
+        }
+
+
+        #region loader
+
+        void ILoader.loadDico(LanguageDictionary dico, Factory factory)
         {
             // chargement du dico à partir d'une base SQLite
-
-            //this.refdico = dico;
-
-            this.db.connect();
-
-            this.createSchema();
-
-            // ----------------------------------------------------------------
-            // --  début des chargements  -------------------------------------
-
-
-            // --  chargement des tables de paramètres  -----------------------
-
-            dico.moods = this.loadMoods();
-            if (dico.moods == null)
-            {
-                // une erreur s'est produite lors du chargement des personnes
-            }
-
-            dico.persons = this.loadPersons();
-            if (dico.persons == null)
-            {
-                // une erreur s'est produite lors du chargement des personnes
-            }
-
-            dico.tenses = this.loadTenses();
-            if (dico.tenses == null)
-            {
-                // une erreur s'est produite lors du chargement des personnes
-            }
-
-            dico.language = this.loadLanguage();
-
-            Utils.translations = this.loadTranslations();
-
-
-            // chargement factory
-            Factory factory = new Factory(dico.moods, dico.tenses, dico.persons, this);
-
 
 
             // --  chargement des mots  ---------------------------------------
@@ -102,19 +75,11 @@ namespace NLE.Loader
 
                 dico.Add(word);
             }
-
             
-            // --  fin des chargements  ---------------------------------------
-            // ----------------------------------------------------------------
-
-            this.db.close();
-
-            //this.refdico = null;
-
-            return true;
         }
 
-        private Dictionary<int, string> loadTenses()
+
+        Dictionary<int, string> ILoader.loadTenses()
         {
             Dictionary<int, string> rt = new Dictionary<int, string>();
             List<Dictionary<string, object>> tenses = this.db.select("tenses", new string[] { "id", "name" });
@@ -129,7 +94,7 @@ namespace NLE.Loader
             return rt;
         }
 
-        private Dictionary<int, Person> loadPersons()
+        Dictionary<int, Person> ILoader.loadPersons()
         {
             Dictionary<int, Person> rt = new Dictionary<int, Person>();
             List<Dictionary<string, object>> persons = this.db.select("persons", new string[] { "id", "position", "number", "personal_pronoun", "description" });
@@ -147,7 +112,7 @@ namespace NLE.Loader
             return rt;
         }
 
-        private Dictionary<int, string> loadMoods()
+        Dictionary<int, string> ILoader.loadMoods()
         {
             Dictionary<int, string> rt = new Dictionary<int, string>();
             List<Dictionary<string, object>> moods = this.db.select("moods", new string[] { "id", "name" });
@@ -162,7 +127,7 @@ namespace NLE.Loader
             return rt;
         }
 
-        private string loadLanguage()
+        string ILoader.loadLanguage()
         {
             List<Dictionary<string, object>> parametres = this.db.select("params", new string[] { "name", "value" }, new string[] { "name='language'" });
             if (parametres.Count != 1)
@@ -171,7 +136,7 @@ namespace NLE.Loader
             return (string)parametres[0]["value"];
         }
 
-        private Dictionary<string, string> loadTranslations()
+        Dictionary<string, string> ILoader.loadTranslations()
         {
             Dictionary<string, string> rt = new Dictionary<string, string>();
             List<Dictionary<string, object>> translations = this.db.select("translations", new string[] { "key", "value" });
@@ -186,6 +151,8 @@ namespace NLE.Loader
 
             return rt;
         }
+        
+        #endregion
 
         
         private Word[] getConjugatedVerbsFor(string v, Factory factory)
@@ -206,10 +173,7 @@ namespace NLE.Loader
             return verbs.ToArray();
         }
 
-        bool ILoader.UnLoad()
-        {
-            return this.db.close();
-        }
+
 
         private bool createSchema()
         {

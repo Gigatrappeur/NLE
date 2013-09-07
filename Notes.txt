@@ -1,3 +1,16 @@
+2013-09-07:
+Contraction ?
+Exemple : Je = J'
+
+
+SQLiteLoader :
+Ajouter sécurité sur la classe SQLiteLoader de façons à éviter d'appeler une méthode de chargement si la base de données n'est pas instancier.
+Instancier la base de données uniquement dans la méthode prévue !
+
+Divers :
+Ajouter un logger (qui supporte l'asynchrone)
+
+
 2013-09-04:
 Description solution :
 Projet Analyse : programme permettant d'analyser un texte.

@@ -33,19 +33,17 @@ namespace NLE.Engine
 
 
 
-        // indique si le dictionnaire est déjà chargé
-        private bool IsAlreadyLoaded;
-        // objet gérant les intéractions entre le dictionnaire et son support de stockage
-        private ILoader loader;
+        // indique si le dictionnaire est chargé
+        public bool IsLoaded { get; set; }
 
 
         /// <summary>
         /// Constructeur du dictionnaire
         /// </summary>
         /// <param name="loader">Objet permettant de gérer les opération entre le dictionnaire et son support de stockage</param>
-        public LanguageDictionary(ILoader loader = null)
+        public LanguageDictionary()
         {
-            this.loader = loader;
+            this.IsLoaded = false;
             this.root = new FragmentWord(' ');
             this.conjugaisonTables = new List<ConjugationTable>();
             this.tenses = null;
@@ -57,7 +55,7 @@ namespace NLE.Engine
         /// Charge le dictionnaire à l'aide du loader donné lors de la construction
         /// </summary>
         /// <returns>Si le chargement s'est passé correctement, renvoi true</returns>
-        public bool load()
+        /*public bool load()
         {
             if (this.loader != null && !this.IsAlreadyLoaded)
             {
@@ -66,7 +64,7 @@ namespace NLE.Engine
             }
 
             return false; // pas de loader définit ou dico déjà chargé
-        }
+        }*/
 
 
         /// <summary>

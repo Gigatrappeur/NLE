@@ -6,12 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace NLE.Glossary
 {
-    public interface WordType
-    {
-
-    }
-
-    public class Word : IComparable<Word>
+    public class Word : PhraseItem, IComparable<Word>
     {
         public string word { get; private set; }
         public string definition { get; private set; }
