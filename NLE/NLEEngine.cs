@@ -93,6 +93,10 @@ namespace NLE
                 Factory factory = new Factory(dico.moods, dico.tenses, dico.persons);
                 loader.loadDico(dico, factory);
 
+
+                engine = new InferencesEngine();
+
+
                 loader.afterLoading();
 
                 dico.IsLoaded = true;
@@ -161,7 +165,7 @@ namespace NLE
         // temporaire
         public static string testTrasformation(string text)
         {
-            return Analyse.whatTypeOfPhrase(text);
+            return Analyse.whatTypeOfPhrase(text, engine);
         }
 
 

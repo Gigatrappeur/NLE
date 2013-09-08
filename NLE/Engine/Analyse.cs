@@ -23,32 +23,20 @@ namespace NLE.Engine
 
 
 
-        public static string whatTypeOfPhrase(string phrase)
+        public static string whatTypeOfPhrase(string phrase, InferencesEngine engine)
         {
-            
-            return transform(phrase);
+            PhraseItem[] items = getPhraseItems(phrase);
+
+            return "";
         }
 
 
-        /*private static string[] getPhrases(string text)
+        /*private static string transform(string text)
         {
-            return text.Split(new char[] { '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
-        }
-
-
-        private static string[] getWords(string phrase)
-        {
-            List<string> rt = new List<string>();
-            string[] words = Regex.Split(phrase, "[^a-zA-Z]+"); // problème mots composés
-            foreach (var word in words)
-            {
-                if (word != "")
-                    rt.Add(word);
-            }
-            return rt.ToArray(); ;
+            return string.Join<PhraseItem>(" ", getPhraseItems(text));
         }*/
 
-        private static string transform(string text)
+        public static PhraseItem[] getPhraseItems(string phrase)
         {
             Regex regexForWord = new Regex("[a-zA-Z]+");
             Regex regexForPonctuation = new Regex(",|\\?|!|:|'|\"|;|\\.\\.\\.|\\.");
@@ -56,10 +44,10 @@ namespace NLE.Engine
             List<PhraseItem> schema = new List<PhraseItem>();
             Match matchWord = null, matchPonctuation = null;
             int index = 0;
-            while (index < text.Length)
+            while (index < phrase.Length)
             {
-                matchWord = regexForWord.Match(text, index);
-                matchPonctuation = regexForPonctuation.Match(text, index);
+                matchWord = regexForWord.Match(phrase, index);
+                matchPonctuation = regexForPonctuation.Match(phrase, index);
 
                 if (matchWord.Value != String.Empty && (matchPonctuation.Value == String.Empty || matchWord.Index < matchPonctuation.Index))
                 {
@@ -82,7 +70,7 @@ namespace NLE.Engine
                         case ":": typePonctuation = "2 points"; break;
                         case "...": typePonctuation = "points de suspension"; break;
                         case ";": typePonctuation = "point-virgule"; break;
-                        default:  typePonctuation = "autre"; break;
+                        default: typePonctuation = "autre"; break;
                     }
 
                     schema.Add(new Punctuation(matchPonctuation.Value, typePonctuation));
@@ -90,11 +78,11 @@ namespace NLE.Engine
                 }
                 else
                 {
-                    return string.Join(" ", schema);
+                    return schema.ToArray();
                 }
             }
 
-            return string.Join(" ", schema); ;
+            return schema.ToArray();
         }
 
 
