@@ -1,3 +1,6 @@
+2013-09-13:
+Analyse sémantique ?
+
 2013-09-08:
 utiliser les règles de la manière suivante :
 référencer toutes les règles qui ont pour prémisses, des éléments de base (noun, verbe, ...)
